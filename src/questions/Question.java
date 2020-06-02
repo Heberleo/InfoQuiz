@@ -1,9 +1,18 @@
 package questions;
 
-public class Question {
+public abstract class Question {
 
-	public Question() {
-		// TODO Auto-generated constructor stub
+	private String title;
+
+	public Question(String title) {
+		setTitle(title);
 	}
 
+	public String getTitle() {
+		return this.title;
+	}
+
+	public void setTitle(String title) throws IllegalArgumentException {
+		this.title = title;
+	}
 }
