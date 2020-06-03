@@ -13,7 +13,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay {
         setVisible(true);
     }
     @Override
-    public void readQuestion(Question q) throws IllegalQuestionException {
+    public void readQuestion(Question q) {
         if (!checkType(q)) throw new IllegalQuestionException("MultipleChoice");
 
     }

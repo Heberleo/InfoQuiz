@@ -8,7 +8,7 @@ public class FillBlankDisplay extends QuestionDisplay {
 
     }
     @Override
-    public void readQuestion(Question q) throws IllegalQuestionException {
+    public void readQuestion(Question q) {
         if (!checkType(q)) throw new IllegalQuestionException("FillBlank");
 
     }
