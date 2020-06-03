@@ -5,13 +5,11 @@ import java.awt.*;
 
 public class QuestionPanel extends JPanel {
     CardLayout cardLayout;
-    boolean test = true;
 
     /**
      * Declare one object of each subclass of QuestionDisplay to represent the different types of questions
      */
     MultipleChoiceDisplay multipleChoiceDisplay;
-    GuessDisplay guessDisplay;
     FillBlankDisplay fillBlankDisplay;
 
     public QuestionPanel() {
@@ -20,27 +18,22 @@ public class QuestionPanel extends JPanel {
         setLayout(cardLayout);
         //Create QuestionDiplays
         multipleChoiceDisplay = new MultipleChoiceDisplay();
-        guessDisplay = new GuessDisplay();
         fillBlankDisplay = new FillBlankDisplay();
         //Add questionDiplays to this Panel
         add(multipleChoiceDisplay, "MultipleChoice");
-        add(guessDisplay, "Guess");
         add(fillBlankDisplay, "FillBlank");
     }
-
-
-    public void switchPanel() {
-        if (test) {
-            cardLayout.show(this, "Guess");
-            test = !test;
-        } else {
+    /**
+     * Calls the correct QuestionDiplay depending on the type of q and displays the question.
+     * @param q an object of a Question-subclass
+     */
+    public void showQuestion(Question q) {
+        if (q.getClass().equals(MultipleChoice.class)) {
+            multipleChoiceDisplay.readQuestion(q);
             cardLayout.show(this, "MultipleChoice");
-            test = !test;
+        } else if (q.getClass().equals(FillBlank.class)) {
+            fillBlankDisplay.readQuestion(q);
+            cardLayout.show(this, "FillBlank");
         }
     }
-    //public void showQuestion(Question q) {
-    /**
-     * Depending on the type/ class of q, call readQuestion(q) on the corresponding QuestionDiplay and do cardLayout.show(this, "type_of_q");
-     */
-    //}
 }

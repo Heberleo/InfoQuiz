@@ -12,7 +12,16 @@ public class MultipleChoiceDisplay extends QuestionDisplay {
         setBackground(Color.RED);
         setVisible(true);
     }
-    q)
+    @Override
+    public void readQuestion(Question q) throws IllegalQuestionException {
+        if (!checkType(q)) throw new IllegalQuestionException("MultipleChoice");
+
+    }
+    @Override
+    public boolean checkType(Question q) {
+        if (q.getClass().equals(MultipleChoice.class)) return true;
+        return  false;
+    }
 
 
 
