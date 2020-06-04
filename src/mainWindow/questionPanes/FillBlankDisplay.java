@@ -21,6 +21,8 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         pnlTop.setBackground(Color.GREEN);
         taQuestion = new JTextArea(1,0);
         taQuestion.setFocusable(false);
+        taQuestion.setLineWrap(true);
+        taQuestion.setMargin(new Insets(10, 10, 10, 10));
         Font fontQuestion = taQuestion.getFont();
         fontQuestion = new Font(fontQuestion.getName(), fontQuestion.getStyle(), fontQuestion.getSize() + 15);
         taQuestion.setFont(fontQuestion);
@@ -74,6 +76,11 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     private boolean checkEmptyInput() {
         return !getInput().equals("");
     }
+
+    /**
+     * Returns the content of the input Textbox.
+     * @return input text
+     */
     private String getInput() {
         return txtInput.getText();
     }
@@ -110,7 +117,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     }
 
     /**
-     * Sets the question
+     * Sets the question text.
      * @param text the question as String
      */
     private void setQuestion(String text) {
@@ -123,9 +130,10 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(btnSubmit)) {
+            // prototype for a method that should be called here
             if (checkEmptyInput()) {
-                // prototype for a method that should be called here
-                setOutput(true);
+                String s = getInput();
+                setOutput(true); // check output with the question
                 showOutput(true);
                 enableInput(false);
             }
@@ -134,12 +142,12 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     @Override
     public void keyTyped(KeyEvent e) {
         if(e.getKeyChar() == '\n') {
+            // prototype for a method that should be called here
             if (checkEmptyInput()) {
-                // prototype for a method that should be called here
-                setOutput(true);
+                String s = getInput();
+                setOutput(true); // check output with the question
                 showOutput(true);
                 enableInput(false);
-            }
         }
     }
     @Override
