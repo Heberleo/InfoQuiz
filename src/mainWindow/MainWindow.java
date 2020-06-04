@@ -41,8 +41,10 @@ public class MainWindow extends JFrame implements ActionListener{
         menuBar = new JMenuBar();
         lists = new JMenu("Fragen");
         stats = new JMenuItem("Statistiken");
+        stats.setMaximumSize(stats.getPreferredSize()); //to prevent the MenuItems fom scaling
         stats.addActionListener(this);
         dailyChallenge = new JMenuItem("Herausforderungen");
+        dailyChallenge.setMaximumSize(dailyChallenge.getPreferredSize());
         dailyChallenge.addActionListener(this);
         menuBar.add(lists);
             myList = new JMenuItem ("Meine Fragen");
