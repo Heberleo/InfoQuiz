@@ -15,6 +15,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay {
     @Override
     public void readQuestion(Question q) {
         if (!checkType(q)) throw new IllegalQuestionException("MultipleChoice");
+        MultipleChoice m = (MultipleChoice) q;
 
     }
     @Override
