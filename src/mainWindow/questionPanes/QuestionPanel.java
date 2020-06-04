@@ -16,10 +16,10 @@ public class QuestionPanel extends JPanel {
         //Create CardLayout
         cardLayout = new CardLayout();
         setLayout(cardLayout);
-        //Create QuestionDiplays
+        //Create QuestionDisplays
         multipleChoiceDisplay = new MultipleChoiceDisplay();
         fillBlankDisplay = new FillBlankDisplay();
-        //Add questionDiplays to this Panel
+        //Add questionDisplays to this Panel
         add(multipleChoiceDisplay, "MultipleChoice");
         add(fillBlankDisplay, "FillBlank");
     }

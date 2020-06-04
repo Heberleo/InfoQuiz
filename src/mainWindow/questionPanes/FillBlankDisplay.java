@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class FillBlankDisplay extends QuestionDisplay implements ActionListener, KeyListener {
+    //THE QUESTION!
+    FillBlank question;
     //component declaration
     JTextArea taQuestion;
     JButton btnSubmit;
@@ -166,10 +168,10 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     @Override
     public void readQuestion(Question q) {
         if (!checkType(q)) throw new IllegalQuestionException("FillBlank");
-        FillBlank f = (FillBlank) q;
-        setQuestion(f.text);
+        question = (FillBlank) q;
+        setQuestion(question.getTitle());
 
-        hideOutput(false);
+        showOutput(false);
         enableInput(true);
     }
     @Override
