@@ -1,5 +1,7 @@
 package mainWindow.questionPanes;
 
+import questions.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,14 +9,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+
 public class FillBlankDisplay extends QuestionDisplay implements ActionListener, KeyListener {
     //THE QUESTION!
-    FillBlank question;
+    private FillBlank question;
     //component declaration
-    JTextArea taQuestion;
-    JButton btnSubmit;
-    JTextField txtInput;
-    JLabel lblOutput;
+    private JTextArea taQuestion;
+    private JButton btnSubmit;
+    private JTextField txtInput;
+    private JLabel lblOutput;
     //
     public FillBlankDisplay() {
         //the top Panel will contain the Question
@@ -143,13 +146,14 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     }
     @Override
     public void keyTyped(KeyEvent e) {
-        if(e.getKeyChar() == '\n') {
+        if (e.getKeyChar() == '\n') {
             // prototype for a method that should be called here
             if (checkEmptyInput()) {
                 String s = getInput();
                 setOutput(true); // check output with the question
                 showOutput(true);
                 enableInput(false);
+            }
         }
     }
     @Override
