@@ -1,5 +1,8 @@
 package mainWindow;
 
+import mainWindow.questionPanes.QuestionPanel;
+import questions.FillBlank;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.security.PrivateKey;
 
 public class MainWindow extends JFrame implements ActionListener{
-    private JPanel mainQuestionPanel; //contains the different Question panels;
+    private QuestionPanel mainQuestionPanel; //contains the different Question panels;
     private JPanel mainButtonPanel; //contains Buttons
     private JButton saveButton; //to save question
     private JButton nextButton; //to get next Question
@@ -24,7 +27,7 @@ public class MainWindow extends JFrame implements ActionListener{
     public MainWindow() {
         super("InfoQuiz");
         //QuestionPanel
-        mainQuestionPanel = new JPanel();
+        mainQuestionPanel = new QuestionPanel();
         mainQuestionPanel.setBackground(Color.RED); // Just a Test
         //ButtonPanel
         saveButton = new JButton("save");
@@ -91,6 +94,8 @@ public class MainWindow extends JFrame implements ActionListener{
             }
             if (e.getSource().equals(nextButton)) {
                 System.out.println("next");
+                FillBlank f = new FillBlank("Was ist 2 + 2?", "Pfier");
+                mainQuestionPanel.showQuestion(f);
             }
             if (e.getSource().equals(saveButton)) {
                 System.out.println("safe");

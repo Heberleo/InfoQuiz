@@ -1,5 +1,8 @@
 package mainWindow.questionPanes;
 
+
+import questions.*;
+
 import javax.swing.*;
 import java.awt.*;
 

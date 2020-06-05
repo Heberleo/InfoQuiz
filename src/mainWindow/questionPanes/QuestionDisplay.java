@@ -1,5 +1,9 @@
 package mainWindow.questionPanes;
 
+
+
+import questions.*;
+
 import javax.swing.*;
 
 public abstract class QuestionDisplay extends JPanel {

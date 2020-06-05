@@ -1,5 +1,7 @@
 package mainWindow.questionPanes;
 
+
+import questions.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -18,6 +20,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay {
         MultipleChoice m = (MultipleChoice) q;
 
     }
+
     @Override
     public boolean checkType(Question q) {
         if (q.getClass().equals(MultipleChoice.class)) return true;
