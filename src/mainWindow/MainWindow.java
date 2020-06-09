@@ -85,6 +85,7 @@ public class MainWindow extends JFrame implements ActionListener{
             }
             if (e.getSource().equals(stats)) {
                 System.out.println("stats");
+                new StatsWindow(this);
             }
             if (e.getSource().equals(dailyChallenge)) {
                 System.out.println("Dayly");
