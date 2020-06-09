@@ -6,10 +6,15 @@ public abstract class Question {
 	private String title;
 	private int time; // in seconds
 	protected Questiontype type;
+	private int id;
 
 	public Question(String title, int time) {
+		this(title, time, new Stats());
+	}
+	
+	public Question(String title, int time, Stats stats) {
 		setTitle(title);
-		stats = new Stats();
+		setStats(stats);
 		setTime(time);
 	}
 	
@@ -39,5 +44,17 @@ public abstract class Question {
 	
 	public Stats getStats() {
 		return this.stats;
+	}
+	
+	public void setStats(Stats stats) {
+		this.stats = stats;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 }
