@@ -14,11 +14,6 @@ public class FillBlank extends Question {
 		setCorrectAnswer(correctAnswer);
 	}
 	
-	@Override
-	public boolean checkAnswer(String answer) {
-		return answer == this.correctAnswer;
-	}
-	
 	public String getCorrectAnswer() {
 		return this.correctAnswer;
 	}

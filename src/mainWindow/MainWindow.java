@@ -94,7 +94,7 @@ public class MainWindow extends JFrame implements ActionListener{
             if (e.getSource().equals(prevButton)) {
                 System.out.println("prev");
                 String[] answers = {"1", "2", "3", "4"};
-                MultipleChoice m = new MultipleChoice("Was ist 2 * 2?", answers, 3);
+                MultipleChoice m = new MultipleChoice("Was ist 2 * 2?", answers, new int[] {4});
                 mainQuestionPanel.showQuestion(m);
             }
             if (e.getSource().equals(nextButton)) {
