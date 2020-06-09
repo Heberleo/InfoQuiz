@@ -11,7 +11,7 @@ public class MultipleChoice extends Question {
 
 	public MultipleChoice(String title, String[] answers, int correctAnswer, int time) {
 		super(title, time);
-		super.type = Question.MULTIPLE_CHOICE;
+		super.type = Questiontype.MultipleChoice;
 		setAnswers(answers);
 		setCorrectAnswer(correctAnswer);
 	}

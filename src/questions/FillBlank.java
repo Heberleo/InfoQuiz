@@ -10,7 +10,7 @@ public class FillBlank extends Question {
 	
 	public FillBlank(String title, String correctAnswer, int time) {
 		super(title, time);
-		super.type = Question.FILL_BLANK;
+		super.type = Questiontype.FillBlank;
 		setCorrectAnswer(correctAnswer);
 	}
 	
