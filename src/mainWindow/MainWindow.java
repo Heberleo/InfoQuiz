@@ -2,6 +2,7 @@ package mainWindow;
 
 import mainWindow.questionPanes.QuestionPanel;
 import questions.FillBlank;
+import questions.MultipleChoice;
 
 import javax.swing.*;
 import java.awt.*;
@@ -91,11 +92,14 @@ public class MainWindow extends JFrame implements ActionListener{
             }
         // Button Actions
             if (e.getSource().equals(prevButton)) {
-                 System.out.println("prev");
+                System.out.println("prev");
+                String[] answers = {"1", "2", "3", "4"};
+                MultipleChoice m = new MultipleChoice("Was ist 2 * 2?", answers, 3);
+                mainQuestionPanel.showQuestion(m);
             }
             if (e.getSource().equals(nextButton)) {
                 System.out.println("next");
-                FillBlank f = new FillBlank("Was ist 2 + 2?", "Pfier");
+                FillBlank f = new FillBlank("Was ist 2 + 2?", "4");
                 mainQuestionPanel.showQuestion(f);
             }
             if (e.getSource().equals(saveButton)) {

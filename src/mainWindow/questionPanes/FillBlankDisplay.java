@@ -37,13 +37,14 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         JPanel pnlInput = new JPanel();
         JPanel pnlOutput = new JPanel();
         //pnlInput
-        pnlInput.setLayout(new FlowLayout());
+        pnlInput.setLayout(new FlowLayout(FlowLayout.RIGHT));
         // txtInput
         txtInput = new JTextField();
         txtInput.setPreferredSize(new Dimension(370, 40));
         pnlInput.add(txtInput);
         // btnSubmit
         btnSubmit = new JButton("EINGABE");
+        btnSubmit.setFocusable(false);
         btnSubmit.setPreferredSize(new Dimension(100, 40));
         pnlInput.add(btnSubmit);
         //pnlOutput
@@ -96,6 +97,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
      */
     private void enableInput(boolean enabled) {
         btnSubmit.setEnabled(enabled);
+        if (enabled) txtInput.setText("");
         txtInput.setEnabled(enabled);
     }
 
@@ -137,8 +139,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         if (e.getSource().equals(btnSubmit)) {
             // prototype for a method that should be called here
             if (checkEmptyInput()) {
-                String s = getInput();
-                setOutput(true); // check output with the question
+                setOutput(checkAnswer()); // check output with the question
                 showOutput(true);
                 enableInput(false);
             }
@@ -149,8 +150,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         if (e.getKeyChar() == '\n') {
             // prototype for a method that should be called here
             if (checkEmptyInput()) {
-                String s = getInput();
-                setOutput(true); // check output with the question
+                setOutput(checkAnswer()); // check output with the question
                 showOutput(true);
                 enableInput(false);
             }
@@ -181,5 +181,9 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     @Override
     public boolean checkType(Question q) {
         return q.getClass().equals(FillBlank.class);
+    }
+    @Override
+    public boolean checkAnswer() {
+        return question.getCorrectAnswer().equals(getInput());
     }
 }
