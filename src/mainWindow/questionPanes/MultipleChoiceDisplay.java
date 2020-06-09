@@ -186,10 +186,15 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
         return q.getClass().equals(MultipleChoice.class);
     }
 
-    @Override
-    public boolean checkAnswer() {
-        return getSelection() == question.getCorrectAnswer();
-    }
+  @Override
+  public boolean checkAnswer() {
+	  return false;
+  }
+    
+//    @Override
+//    public boolean checkAnswer() {
+//        return getSelection() == question.getCorrectAnswer();
+//    }
 }
 
 
