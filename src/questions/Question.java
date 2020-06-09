@@ -17,8 +17,6 @@ public abstract class Question {
 		setStats(stats);
 		setTime(time);
 	}
-	
-	public abstract boolean checkAnswer(String answer);
 
 	public String getTitle() {
 		return this.title;
