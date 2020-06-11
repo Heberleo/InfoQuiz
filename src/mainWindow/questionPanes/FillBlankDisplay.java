@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 
+@SuppressWarnings("serial")
 public class FillBlankDisplay extends QuestionDisplay implements ActionListener, KeyListener {
     //THE QUESTION!
     private FillBlank question;
@@ -18,6 +19,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     private JButton btnSubmit;
     private JTextField txtInput;
     private JLabel lblOutput;
+    private TimerPanel timer;
     //
     public FillBlankDisplay() {
         //the top Panel will contain the Question
@@ -46,7 +48,9 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         btnSubmit = new JButton("EINGABE");
         btnSubmit.setFocusable(false);
         btnSubmit.setPreferredSize(new Dimension(100, 40));
+        timer = new TimerPanel();
         pnlInput.add(btnSubmit);
+        pnlInput.add(timer);
         //pnlOutput
         pnlOutput.setLayout(new BorderLayout());
         // lblOutput
@@ -142,6 +146,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
                 setOutput(checkAnswer()); // check output with the question
                 showOutput(true);
                 enableInput(false);
+                timer.stop();
             }
         }
     }
@@ -153,6 +158,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
                 setOutput(checkAnswer()); // check output with the question
                 showOutput(true);
                 enableInput(false);
+                timer.stop();
             }
         }
     }
@@ -177,6 +183,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
 
         showOutput(false);
         enableInput(true);
+        timer.start(question.getTime());
     }
     @Override
     public boolean checkType(Question q) {

@@ -23,6 +23,7 @@ public class MainWindow extends JFrame implements ActionListener{
         private JMenuItem myList;
     private JMenuItem stats; // to go to Stats
     private JMenuItem dailyChallenge; // to Access dailyChallenges
+    private StatsWindow statsWindow;
 
 
     public MainWindow() {
@@ -85,7 +86,8 @@ public class MainWindow extends JFrame implements ActionListener{
             }
             if (e.getSource().equals(stats)) {
                 System.out.println("stats");
-                new StatsWindow(this);
+                if (statsWindow == null || !statsWindow.isVisible())
+                	statsWindow = new StatsWindow(this);
             }
             if (e.getSource().equals(dailyChallenge)) {
                 System.out.println("Dayly");
