@@ -6,6 +6,7 @@ public class DBconncetion {
     public static void main( String args[] ) {
         Connection c = null;
         Statement stmt = null;
+        System.out.println("test");
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -21,7 +22,7 @@ public class DBconncetion {
             rs.close();
             stmt.close();
             c.close();
-
+ 
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
