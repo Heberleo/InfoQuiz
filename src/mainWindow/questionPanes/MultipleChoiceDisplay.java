@@ -3,13 +3,13 @@ package mainWindow.questionPanes;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -33,7 +33,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	private JCheckBox cb3;
 	private JCheckBox cb4;
 	private JLabel lblOutput;
-	private Timer timer;
+	private TimerPanel timer;
 
 	public MultipleChoiceDisplay() {
 		// the top Panel will contain the Question
@@ -70,14 +70,14 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		pnlLeft.add(cb3);
 		pnlLeft.add(cb4);
 		pnlInput.add(pnlLeft);
-		// btnSubmit in pnlRight
+		// btnSubmit and timer in pnlRight
 		JPanel pnlRight = new JPanel(new GridLayout(2, 1));
-		pnlRight.setBackground(Color.yellow);
+		pnlRight.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		btnSubmit = new JButton("EINGABE");
 		btnSubmit.setFocusable(false);
 		btnSubmit.setPreferredSize(new Dimension(100, 40));
 		pnlRight.add(btnSubmit);
-		timer = new Timer(this, 5);
+		timer = new TimerPanel();
 		pnlRight.add(timer);
 		pnlInput.add(pnlRight);
 		// pnlOutput
@@ -185,8 +185,8 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnSubmit)) {
-			timer.start();
 			if (getSelection() != -1) {
+				timer.stop();
 				// prototype for a method that should be called here
 				setOutput(checkAnswer()); // check output with the question
 				showOutput(true);
@@ -208,6 +208,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 
 		showOutput(false);
 		enableInput(true);
+		timer.start(question.getTime());
 	}
 
 	@Override
