@@ -1,13 +1,16 @@
 package mainWindow.questionPanes;
 
 import questions.*;
+import resources.MyButton;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import static resources.MyColor.uni;
 
 
 @SuppressWarnings("serial")
@@ -16,10 +19,13 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     private FillBlank question;
     //component declaration
     private JTextArea taQuestion;
-    private JButton btnSubmit;
+    private MyButton btnSubmit;
     private JTextField txtInput;
     private JLabel lblOutput;
     private TimerPanel timer;
+    private CardLayout clOutput;
+    private JPanel pnlOutput;
+    private JPanel pnlEmpty;
     //
     public FillBlankDisplay() {
         //the top Panel will contain the Question
@@ -37,22 +43,23 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         //the bottom Panel will a gridLayout containing two panels
         JPanel pnlBottom = new JPanel();
         JPanel pnlInput = new JPanel();
-        JPanel pnlOutput = new JPanel();
+        pnlOutput = new JPanel();
         //pnlInput
         pnlInput.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        pnlInput.setBackground(Color.WHITE);
         // txtInput
         txtInput = new JTextField();
+        txtInput.setBorder(new LineBorder(uni));
         txtInput.setPreferredSize(new Dimension(370, 40));
         pnlInput.add(txtInput);
         // btnSubmit
-        btnSubmit = new JButton("EINGABE");
-        btnSubmit.setFocusable(false);
+        btnSubmit = new MyButton("EINGABE");
         btnSubmit.setPreferredSize(new Dimension(100, 40));
-        timer = new TimerPanel();
         pnlInput.add(btnSubmit);
-        pnlInput.add(timer);
         //pnlOutput
-        pnlOutput.setLayout(new BorderLayout());
+        clOutput = new CardLayout();
+        pnlOutput.setLayout(clOutput);
+        pnlOutput.setBackground(Color.WHITE);
         // lblOutput
         lblOutput = new JLabel();
         lblOutput.setOpaque(true);
@@ -61,7 +68,14 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         lblOutput.setFont(fontOutput);
         lblOutput.setHorizontalAlignment(SwingConstants.CENTER);
         lblOutput.setVisible(false);
-        pnlOutput.add(lblOutput, BorderLayout.CENTER);
+        pnlOutput.add(lblOutput, "lblOutput");
+        // timer
+        timer = new TimerPanel(this);
+        pnlOutput.add(timer, "timer");
+        // pnlEmpty
+        pnlEmpty = new JPanel();
+        pnlEmpty.setBackground(Color.WHITE);
+        pnlOutput.add(pnlEmpty, "empty");
         //add to pnlBottom
         pnlBottom.setLayout(new GridLayout(2, 1));
         pnlBottom.add(pnlInput);
@@ -110,7 +124,23 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
      * @param visible true for visible, false for invisible
      */
     private void showOutput(boolean visible) {
-        lblOutput.setVisible(visible);
+        if (visible) {
+            clOutput.show(pnlOutput, "lblOutput");
+        } else {
+            clOutput.show(pnlOutput, "empty");
+        }
+    }
+
+    /**
+     * Selects timer in the CardLayout
+     * @param visible makes timer visible/ invisible
+     */
+    private void showTimer(boolean visible) {
+        if (visible) {
+            clOutput.show(pnlOutput, "timer");
+        } else {
+            clOutput.show(pnlOutput, "empty");
+        }
     }
 
     /**
@@ -123,7 +153,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
             lblOutput.setText("RICHTIG");
         } else {
             lblOutput.setBackground(Color.RED);
-            lblOutput.setText("FALSCH");
+            lblOutput.setText("Richtige Antwort: " + question.getCorrectAnswer());
         }
     }
 
@@ -141,24 +171,16 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(btnSubmit)) {
-            // prototype for a method that should be called here
             if (checkEmptyInput()) {
-                setOutput(checkAnswer()); // check output with the question
-                showOutput(true);
-                enableInput(false);
-                timer.stop();
+                hitSubmit();
             }
         }
     }
     @Override
     public void keyTyped(KeyEvent e) {
         if (e.getKeyChar() == '\n') {
-            // prototype for a method that should be called here
             if (checkEmptyInput()) {
-                setOutput(checkAnswer()); // check output with the question
-                showOutput(true);
-                enableInput(false);
-                timer.stop();
+                hitSubmit();
             }
         }
     }
@@ -181,7 +203,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         question = (FillBlank) q;
         setQuestion(question.getTitle());
 
-        showOutput(false);
+        showTimer(true);
         enableInput(true);
         timer.start(question.getTime());
     }
@@ -192,5 +214,13 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     @Override
     public boolean checkAnswer() {
         return question.getCorrectAnswer().equals(getInput());
+    }
+
+    @Override
+    public void hitSubmit() {
+        setOutput(checkAnswer()); // check output with the question
+        showOutput(true);
+        enableInput(false);
+        timer.stop();
     }
 }

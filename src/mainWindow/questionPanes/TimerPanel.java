@@ -1,6 +1,8 @@
 package mainWindow.questionPanes;
 
-import java.awt.GridBagLayout;
+import questions.Question;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,23 +10,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+@SuppressWarnings("LossyEncoding")
 public class TimerPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = -8879960033005462359L;
 
 	private JLabel lblSeconds;
 	private Timer timer;
+	private QuestionDisplay parent;
 
 	/**
 	 * Creates a new JPanel with a timer counting down seconds.
 	 */
-	public TimerPanel() {
+	public TimerPanel(QuestionDisplay parent) {
 		this.lblSeconds = new JLabel();
+		this.parent = parent;
 
 		timer = new Timer(1000, this);
 
+		this.setBackground(Color.WHITE);
 		this.setLayout(new GridBagLayout());
-		this.add(new JLabel("Sekunden übrig: "));
+		this.add(new JLabel("Sekunden ï¿½brig: "));
 		this.add(this.lblSeconds);
 	}
 
@@ -50,7 +56,7 @@ public class TimerPanel extends JPanel implements ActionListener {
 	 * Called when timer reached zero.
 	 */
 	private void timeOut() {
-		// deactivate current question here
+		parent.hitSubmit();
 	}
 
 	@Override
