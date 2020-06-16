@@ -23,20 +23,20 @@ public class QuestionPanel extends JPanel {
         multipleChoiceDisplay = new MultipleChoiceDisplay();
         fillBlankDisplay = new FillBlankDisplay();
         //Add questionDisplays to this Panel
-        add(multipleChoiceDisplay, "MultipleChoice");
-        add(fillBlankDisplay, "FillBlank");
+        add(multipleChoiceDisplay, "" + Questiontype.MultipleChoice);
+        add(fillBlankDisplay, "" + Questiontype.FillBlank);
     }
     /**
      * Calls the correct QuestionDiplay depending on the type of q and displays the question.
      * @param q an object of a Question-subclass
      */
     public void showQuestion(Question q) {
-        if (q.getClass().equals(MultipleChoice.class)) {
+        if (q.getType().equals(Questiontype.MultipleChoice)) {
             multipleChoiceDisplay.readQuestion(q);
-            cardLayout.show(this, "MultipleChoice");
-        } else if (q.getClass().equals(FillBlank.class)) {
+            cardLayout.show(this, "" + Questiontype.MultipleChoice);
+        } else if (q.getType().equals(Questiontype.FillBlank)) {
             fillBlankDisplay.readQuestion(q);
-            cardLayout.show(this, "FillBlank");
+            cardLayout.show(this, "" + Questiontype.FillBlank);
         }
     }
 }

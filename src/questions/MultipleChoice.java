@@ -28,6 +28,11 @@ public class MultipleChoice extends Question {
 		return this.correctAnswers;
 	}
 
+	/**
+	 *
+	 * @param correctAnswers index starting at 1 and in ascending order!
+	 * @throws IllegalArgumentException if null
+	 */
 	private void setCorrectAnswers(int[] correctAnswers) throws IllegalArgumentException {
 		this.correctAnswers = correctAnswers;
 	}
