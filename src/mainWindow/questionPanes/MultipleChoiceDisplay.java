@@ -1,13 +1,11 @@
 package mainWindow.questionPanes;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -17,9 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 import questions.MultipleChoice;
 import questions.Question;
+import resources.MyButton;
 
 @SuppressWarnings("serial")
 public class MultipleChoiceDisplay extends QuestionDisplay implements ActionListener {
@@ -27,19 +27,21 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	private MultipleChoice question;
 	// component declaration
 	private JTextArea taQuestion;
-	private JButton btnSubmit;
+	private MyButton btnSubmit;
 	private JCheckBox cb1;
 	private JCheckBox cb2;
 	private JCheckBox cb3;
 	private JCheckBox cb4;
 	private JLabel lblOutput;
 	private TimerPanel timer;
+	private CardLayout clOutput;
+	private JPanel pnlOutput;
+	private JPanel pnlEmpty;
 
 	public MultipleChoiceDisplay() {
 		// the top Panel will contain the Question
 		JPanel pnlTop = new JPanel();
 		pnlTop.setLayout(new BorderLayout());
-		pnlTop.setBackground(Color.GREEN);
 		taQuestion = new JTextArea(1, 0);
 		taQuestion.setFocusable(false);
 		taQuestion.setLineWrap(true);
@@ -51,7 +53,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		// the bottom Panel will a gridLayout containing two panels
 		JPanel pnlBottom = new JPanel();
 		JPanel pnlInput = new JPanel();
-		JPanel pnlOutput = new JPanel();
+		pnlOutput = new JPanel();
 		// pnlInput
 		pnlInput.setLayout(new GridLayout(1, 2));
 		// CheckBoxes & Labels in pnlLeft
@@ -65,23 +67,26 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		cb2.setFocusable(false);
 		cb3.setFocusable(false);
 		cb4.setFocusable(false);
+		cb1.setBackground(Color.WHITE);
+		cb2.setBackground(Color.WHITE);
+		cb3.setBackground(Color.WHITE);
+		cb4.setBackground(Color.WHITE);
 		pnlLeft.add(cb1);
 		pnlLeft.add(cb2);
 		pnlLeft.add(cb3);
 		pnlLeft.add(cb4);
 		pnlInput.add(pnlLeft);
-		// btnSubmit and timer in pnlRight
+		// btnSubmit in pnlRight
 		JPanel pnlRight = new JPanel(new GridLayout(2, 1));
 		pnlRight.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		btnSubmit = new JButton("EINGABE");
+		btnSubmit = new MyButton("EINGABE");
 		btnSubmit.setFocusable(false);
 		btnSubmit.setPreferredSize(new Dimension(100, 40));
 		pnlRight.add(btnSubmit);
-		timer = new TimerPanel();
-		pnlRight.add(timer);
 		pnlInput.add(pnlRight);
 		// pnlOutput
-		pnlOutput.setLayout(new BorderLayout());
+		clOutput = new CardLayout();
+		pnlOutput.setLayout(clOutput);
 		// lblOutput
 		lblOutput = new JLabel();
 		lblOutput.setOpaque(true);
@@ -89,8 +94,14 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		fontOutput = new Font(fontOutput.getName(), fontOutput.getStyle(), fontOutput.getSize() + 15);
 		lblOutput.setFont(fontOutput);
 		lblOutput.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOutput.setVisible(false);
-		pnlOutput.add(lblOutput, BorderLayout.CENTER);
+		pnlOutput.add(lblOutput, "lblOutput");
+		//timer
+		timer = new TimerPanel(this);
+		pnlOutput.add(timer, "timer");
+		// pnlEmpty
+		pnlEmpty = new JPanel();
+		pnlEmpty.setBackground(Color.WHITE);
+		pnlOutput.add(pnlEmpty, "empty");
 		// add to pnlBottom
 		pnlBottom.setLayout(new GridLayout(2, 1));
 		pnlBottom.add(pnlInput);
@@ -102,10 +113,18 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		setVisible(true);
 		// ActionListeners
 		btnSubmit.addActionListener(this);
+		// backgrounds to White
+		setBackground(Color.WHITE);
+		pnlBottom.setBackground(Color.WHITE);
+		pnlInput.setBackground(Color.WHITE);
+		pnlLeft.setBackground(Color.WHITE);
+		pnlRight.setBackground(Color.WHITE);
+		pnlTop.setBackground(Color.WHITE);
+		pnlOutput.setBackground(Color.WHITE);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
-	// methods to interact with the graphical components
+	// methods to interact with the graphical component
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -133,7 +152,23 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	 * @param visible true for visible, false for invisible
 	 */
 	private void showOutput(boolean visible) {
-		lblOutput.setVisible(visible);
+		if (visible) {
+			clOutput.show(pnlOutput, "lblOutput");
+		} else {
+			clOutput.show(pnlOutput, "empty");
+		}
+	}
+
+	/**
+	 * Selects timer in the CardLayout
+	 * @param visible makes timer visible/ invisible
+	 */
+	private void showTimer(boolean visible) {
+		if (visible) {
+			clOutput.show(pnlOutput, "timer");
+		} else {
+			clOutput.show(pnlOutput, "empty");
+		}
 	}
 
 	/**
@@ -147,10 +182,19 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 			lblOutput.setText("RICHTIG");
 		} else {
 			lblOutput.setBackground(Color.RED);
-			lblOutput.setText("FALSCH");
+			StringBuilder answer = new StringBuilder("Richtige Antworten: ");
+			for (int i : question.getCorrectAnswers()) {
+				answer.append(i + ", ");
+			}
+			answer.reverse().delete(0, 2).reverse().append(".");
+			lblOutput.setText(answer.toString());
 		}
 	}
 
+	/**
+	 * Sets the answeroptions
+	 * @param a answers
+	 */
 	private void setAnswers(String[] a) {
 		cb1.setText(a[0]);
 		cb2.setText(a[1]);
@@ -158,18 +202,43 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		cb4.setText(a[3]);
 	}
 
-	private int getSelection() {
+	/**
+	 * Index will start at 1 and in ascending order
+	 * @return int[] with the index of the selected answers
+	 */
+	private int[] getSelection() {
+		ArrayList<Integer> selection = new ArrayList<>();
 		if (cb1.isSelected())
-			return 0;
+			selection.add(1);
 		if (cb2.isSelected())
-			return 1;
+			selection.add(2);
 		if (cb3.isSelected())
-			return 2;
+			selection.add(3);
 		if (cb4.isSelected())
-			return 3;
-		return -1;
+			selection.add(4);
+
+		int[] temp = new int[selection.size()];
+		for (int i = 0; i < selection.size(); ++i) {
+			temp[i] = selection.get(i);
+		}
+		return  temp;
 	}
 
+	/**
+	 * Checks if the selection is empty.
+	 * @return true if no answer is selected
+	 */
+	private boolean selectionIsEmpty() {
+		if (cb1.isSelected())
+			return false;
+		if (cb2.isSelected())
+			return false;
+		if (cb3.isSelected())
+			return false;
+		if (cb4.isSelected())
+			return false;
+		return true;
+	}
 	/**
 	 * Sets the question text.
 	 * 
@@ -178,6 +247,8 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	private void setQuestion(String text) {
 		taQuestion.setText(text);
 	}
+
+
 	/////////////////////////////////////////////////////////////////////////////////////
 	// ActionListeners and KeyListeners
 	////////////////////////////////////////////////////////////////////////////////////
@@ -185,13 +256,8 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnSubmit)) {
-			if (getSelection() != -1) {
-				timer.stop();
-				// prototype for a method that should be called here
-				setOutput(checkAnswer()); // check output with the question
-				showOutput(true);
-				enableInput(false);
-			}
+			if (!selectionIsEmpty())
+				hitSubmit();
 		}
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////
@@ -206,7 +272,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		setQuestion(question.getTitle());
 		setAnswers(question.getAnswers());
 
-		showOutput(false);
+		showTimer(true);
 		enableInput(true);
 		timer.start(question.getTime());
 	}
@@ -216,13 +282,18 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		return q.getClass().equals(MultipleChoice.class);
 	}
 
-	@Override
-	public boolean checkAnswer() {
-		return false;
-	}
 
-//    @Override
-//    public boolean checkAnswer() {
-//        return getSelection() == question.getCorrectAnswer();
-//    }
+    @Override
+    public boolean checkAnswer() {
+		return Arrays.equals(question.getCorrectAnswers(), getSelection());
+    }
+
+	@Override
+	public void hitSubmit() {
+		timer.stop();
+
+		setOutput(checkAnswer()); // check output with the question
+		showOutput(true);
+		enableInput(false);
+	}
 }
