@@ -1,8 +1,8 @@
-package mainWindow.questionPanes;
+package GUI.questionPanes;
 
 
 
-import questions.*;
+import Management.*;
 
 import javax.swing.*;
 
