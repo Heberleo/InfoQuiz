@@ -1,12 +1,14 @@
-package mainWindow.questionPanes;
+package GUI.questionPanes;
 
 
-import questions.*;
+import Management.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class QuestionPanel extends JPanel {
+public class QuestionPanel extends JPanel implements PropertyChangeListener {
     CardLayout cardLayout;
 
     /**
@@ -14,6 +16,8 @@ public class QuestionPanel extends JPanel {
      */
     MultipleChoiceDisplay multipleChoiceDisplay;
     FillBlankDisplay fillBlankDisplay;
+    QuestionDisplay currentDisplay;
+    WelcomePanel welcomePanel;
 
     public QuestionPanel() {
         //Create CardLayout
@@ -25,18 +29,32 @@ public class QuestionPanel extends JPanel {
         //Add questionDisplays to this Panel
         add(multipleChoiceDisplay, "" + Questiontype.MultipleChoice);
         add(fillBlankDisplay, "" + Questiontype.FillBlank);
+
+        //welcomePanel will be selected at the beginning
+        welcomePanel = new WelcomePanel();
+        add(welcomePanel, "welcomePanel");
+        cardLayout.show(this, "welcomePanel");
+
+        //add this as PropertyChangeListener to the MainManagement
+        MainManagement.addQuestionListener(this);
     }
+
     /**
-     * Calls the correct QuestionDiplay depending on the type of q and displays the question.
-     * @param q an object of a Question-subclass
+     * Activates the questionDisplay, that matches the questionType.
+     * @param evt fired, when the currentQuestion in MainMangement is changed.
      */
-    public void showQuestion(Question q) {
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        Question q = (Question) evt.getNewValue();
         if (q.getType().equals(Questiontype.MultipleChoice)) {
+            currentDisplay = multipleChoiceDisplay;
             multipleChoiceDisplay.readQuestion(q);
             cardLayout.show(this, "" + Questiontype.MultipleChoice);
         } else if (q.getType().equals(Questiontype.FillBlank)) {
+            currentDisplay = fillBlankDisplay;
             fillBlankDisplay.readQuestion(q);
             cardLayout.show(this, "" + Questiontype.FillBlank);
         }
     }
+
 }

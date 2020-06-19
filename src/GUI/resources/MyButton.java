@@ -1,10 +1,10 @@
-package resources;
+package GUI.resources;
 
 import javax.swing.*;
 
 import java.awt.*;
 
-import static resources.MyColor.uni;
+import static GUI.resources.MyColor.uni;
 
 public class MyButton extends JButton {
 

@@ -1,4 +1,4 @@
-package mainWindow.questionPanes;
+package GUI.questionPanes;
 
 public class IllegalQuestionException extends RuntimeException {
     public IllegalQuestionException() {
