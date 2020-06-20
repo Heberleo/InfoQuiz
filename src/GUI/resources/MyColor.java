@@ -1,4 +1,4 @@
-package resources;
+package GUI.resources;
 
 import java.awt.*;
 
