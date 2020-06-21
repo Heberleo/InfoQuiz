@@ -1,24 +1,20 @@
-package mainWindow;
+package GUI;
 
-import mainWindow.questionPanes.QuestionPanel;
-import questions.FillBlank;
-import questions.MultipleChoice;
-import resources.MyButton;
+import GUI.questionPanes.QuestionPanel;
+import Management.MainManagement;
+import GUI.resources.MyButton;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.security.PrivateKey;
+import java.awt.event.*;
 
-import static resources.MyColor.uni;
+import static GUI.resources.MyColor.uni;
 
-public class MainWindow extends JFrame implements ActionListener{
+public class MainWindow extends JFrame implements ActionListener {
     private QuestionPanel mainQuestionPanel; //contains the different Question panels;
     private JPanel mainButtonPanel; //contains Buttons
-    private MyButton saveButton; //to save question
+    private MyButton markedButton; //to save question
     private MyButton nextButton; //to get next Question
-    private MyButton prevButton; //to get previous Question
     private JMenuBar menuBar;
     private JMenu lists; // to navigate different Lists of Questions
         private JMenuItem allQuestions;
@@ -27,6 +23,7 @@ public class MainWindow extends JFrame implements ActionListener{
     private JMenuItem stats; // to go to Stats
     private JMenuItem dailyChallenge; // to Access dailyChallenges
     private StatsWindow statsWindow;
+    private WindowListener windowListener;
 
 
     public MainWindow() {
@@ -35,17 +32,15 @@ public class MainWindow extends JFrame implements ActionListener{
         mainQuestionPanel = new QuestionPanel();
         mainQuestionPanel.setBackground(Color.RED); // Just a Test
         //ButtonPanel
-        saveButton = new MyButton("save");
-        saveButton.addActionListener(this);
+        markedButton = new MyButton("unmarked");
+        markedButton.addActionListener(this);
         nextButton = new MyButton("next");
         nextButton.addActionListener(this);
-        prevButton = new MyButton("prev");
-        prevButton.addActionListener(this);
-        mainButtonPanel = new JPanel();
+        mainButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         mainButtonPanel.setBackground(Color.WHITE);
-        mainButtonPanel.add(prevButton);
         mainButtonPanel.add(nextButton);
-        mainButtonPanel.add(saveButton);
+        mainButtonPanel.add(markedButton);
+        mainButtonPanel.add(nextButton);
         // Menu
         menuBar = new JMenuBar();
         menuBar.setBackground(uni);
@@ -81,13 +76,24 @@ public class MainWindow extends JFrame implements ActionListener{
         menuBar.add(stats);
         menuBar.add(dailyChallenge);
         setJMenuBar(menuBar);
+
         //Add together
         add(mainQuestionPanel, BorderLayout.CENTER);
         add(mainButtonPanel, BorderLayout.SOUTH);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(500,500);
         setVisible(true);
+
+        // windowListener
+        windowListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                MainManagement.close();
+            }
+        };
+        addWindowListener(windowListener);
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -96,7 +102,7 @@ public class MainWindow extends JFrame implements ActionListener{
                 System.out.println("mylist");
             }
             if (e.getSource().equals(allQuestions)) {
-                System.out.println("questions");
+                System.out.println("Management");
             }
             if (e.getSource().equals(wrongQuestions)) {
                 System.out.println("wrong");
@@ -107,23 +113,26 @@ public class MainWindow extends JFrame implements ActionListener{
                 	statsWindow = new StatsWindow(this);
             }
             if (e.getSource().equals(dailyChallenge)) {
-                System.out.println("Dayly");
+                System.out.println("Daily");
             }
         // Button Actions
-            if (e.getSource().equals(prevButton)) {
-                System.out.println("prev");
-                String[] answers = {"1", "2", "3", "4"};
-                MultipleChoice m = new MultipleChoice("Was ist 2 * 2?", answers, new int[] {3, 4}, 15);
-                mainQuestionPanel.showQuestion(m);
-            }
             if (e.getSource().equals(nextButton)) {
-                System.out.println("next");
-                FillBlank f = new FillBlank("Was ist 2 + 2?", "4", 10);
-                mainQuestionPanel.showQuestion(f);
+                setMarkedButton(MainManagement.hitNext());
             }
-            if (e.getSource().equals(saveButton)) {
-                System.out.println("safe");
+            if (e.getSource().equals(markedButton)) {
+                setMarkedButton(MainManagement.hitMarked());
             }
     }
 
+    /**
+     * Changes the text/ look of the markedButton, depending of the marked-state of the loaded Question
+     * @param marked true for marked, false for unmarked
+     */
+    private void setMarkedButton(boolean marked) {
+        if(marked) {
+            markedButton.setText("marked");
+        } else {
+            markedButton.setText("unmarked");
+        }
+    }
 }

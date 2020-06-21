@@ -1,4 +1,4 @@
-package questionSupplier;
+package Database;
 
 import java.sql.*;
 
