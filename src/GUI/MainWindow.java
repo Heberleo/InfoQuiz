@@ -117,10 +117,10 @@ public class MainWindow extends JFrame implements ActionListener {
             }
         // Button Actions
             if (e.getSource().equals(nextButton)) {
-                setMarkedButton(MainManagement.hitNext());
+                setMarkedButton(MainManagement.next());
             }
             if (e.getSource().equals(markedButton)) {
-                setMarkedButton(MainManagement.hitMarked());
+                setMarkedButton(MainManagement.mark());
             }
     }
 
