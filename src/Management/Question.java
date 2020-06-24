@@ -12,14 +12,15 @@ public abstract class Question {
 	private int id;
 	private boolean marked;
 
-	public Question(String title, int time) {
-		this(title, time, new Stats());
+	public Question(String title, int time, int id) {
+		this(title, time, new Stats(), id);
 	}
 	
-	public Question(String title, int time, Stats stats) {
+	public Question(String title, int time, Stats stats, int id) {
 		setTitle(title);
 		setStats(stats);
 		setTime(time);
+		setId(id);
 		setMarked(false); // needs to be added as argument
 	}
 
