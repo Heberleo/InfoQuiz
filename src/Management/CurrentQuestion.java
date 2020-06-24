@@ -14,7 +14,7 @@ public class CurrentQuestion {
     public void setQuestion(Question q) {
        if (!checkQuestion(q)) throw  new IllegalArgumentException("Question may not be null.");
        propertyChangeSupport.firePropertyChange("question", this.q, q);
-        this.q = q;
+       this.q = q;
     }
 
     public Question getQuestion() {
