@@ -13,6 +13,7 @@ public class MultipleChoice extends Question {
 
 	public MultipleChoice(String title, String[] answers, String correctAnswers, int time, int id, Stats stats) {
 		super(title, time,stats,id);
+
 		super.type = Questiontype.MultipleChoice;
 		setAnswers(answers);
 		setCorrectAnswers(correctAnswers);

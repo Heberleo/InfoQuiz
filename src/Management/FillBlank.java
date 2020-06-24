@@ -4,12 +4,12 @@ public class FillBlank extends Question {
 	
 	private String correctAnswer;
 
-	public FillBlank(String title, String correctAnswer) {
-		this(title, correctAnswer, 20);
+	public FillBlank(String title, String correctAnswer, int id) {
+		this(title, correctAnswer, 20, id);
 	}
 	
-	public FillBlank(String title, String correctAnswer, int time) {
-		super(title, time);
+	public FillBlank(String title, String correctAnswer, int time, int id) {
+		super(title, time, id);
 		super.type = Questiontype.FillBlank;
 		setCorrectAnswer(correctAnswer);
 	}

@@ -5,6 +5,7 @@ import Management.FillBlank;
 import Management.Question;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class QuestionContainer {
     private static QuestionContainer container = null;
@@ -33,6 +34,10 @@ public class QuestionContainer {
     }
 
     public Question next() {
-        return new FillBlank("hallo", "welt");
+        return new FillBlank("hallo", "welt", 0);
+    }
+
+    public void sort() {
+        list.sort((x, y) -> Math.max(x.getId(), y.getId()));
     }
 }
