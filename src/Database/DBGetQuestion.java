@@ -58,10 +58,10 @@ public class DBGetQuestion {
             System.exit(0);
         }
         if (type == 1) {
-            return question = new MultipleChoice(title,getAnswerMultibleChoice(id),getCorrectAnswerMultipleChoice(1),time);
+            return question = new MultipleChoice(title,getAnswerMultibleChoice(id),getCorrectAnswerMultipleChoice(1),time, id);
         }
         if (type == 2) {
-            return  question = new FillBlank(title,getAnswerFillBLank(id),time);
+            return  question = new FillBlank(title,getAnswerFillBLank(id),time, id);
         }
         return null;
     }

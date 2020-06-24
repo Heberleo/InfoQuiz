@@ -28,15 +28,15 @@ public class MainManagement {
         // Datenbank connect
         DBConncetion.connect();
         //
-        //QuestionContainer.instance().fill();
-        DBConncetion.closeConnection();
+        //QuestionImport.
+        //DBConncetion.closeConnection();
     }
 
     /**
      * This Method will close the Database-connection and shut down the programm.
      */
     public static void close() {
-        DBConncetion.connect();
+        //DBConncetion.connect();
         //QuestionContainer.instance().writeBack()
         DBConncetion.closeConnection();
         System.exit(0);
