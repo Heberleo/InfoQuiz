@@ -35,7 +35,7 @@ public class QuestionPanel extends JPanel implements PropertyChangeListener {
         add(welcomePanel, "welcomePanel");
         cardLayout.show(this, "welcomePanel");
 
-        //add this as PropertyChangeListener to the MainManagement
+        //add this as PropertyChangeListener to the MainManagement.CurrentQuestion
         MainManagement.addQuestionListener(this);
     }
 
