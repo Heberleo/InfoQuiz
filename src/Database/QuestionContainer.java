@@ -2,17 +2,19 @@ package Database;
 
 import GUI.questionPanes.IllegalQuestionException;
 import Management.FillBlank;
+import Management.MultipleChoice;
 import Management.Question;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class QuestionContainer {
     private static QuestionContainer container = null;
-    ArrayList<Question> list;
+    public ArrayList<Question> list;
+    private int count;
 
     private QuestionContainer() {
         list = new ArrayList<Question>();
+        count = 0;
     }
 
     public static QuestionContainer instance() {
@@ -34,7 +36,8 @@ public class QuestionContainer {
     }
 
     public Question next() {
-        return new FillBlank("hallo", "welt", 0);
+        MultipleChoice q = (MultipleChoice) list.get(count);
+        return list.get(count++);
     }
 
     public void sort() {

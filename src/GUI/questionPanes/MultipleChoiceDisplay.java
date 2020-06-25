@@ -196,10 +196,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		} else {
 			lblOutput.setBackground(Color.RED);
 			StringBuilder answer = new StringBuilder("Richtige Antworten: ");
-			for (int i : question.getCorrectAnswers()) {
-				answer.append(i + ", ");
-			}
-			answer.reverse().delete(0, 2).reverse().append(".");
+			answer.append(question.getCorrectAnswers());
 			lblOutput.setText(answer.toString());
 		}
 	}
@@ -286,7 +283,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 
     @Override
     public boolean checkAnswer() {
-		return Arrays.equals(question.getCorrectAnswers(), getSelection());
+		return question.getCorrectAnswers().equals(getSelection());
     }
 
 	@Override

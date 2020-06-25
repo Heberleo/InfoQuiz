@@ -1,6 +1,7 @@
 package Database;
 
 import Management.MultipleChoice;
+import Management.Question;
 import Management.Questiontype;
 import Management.Stats;
 
@@ -12,24 +13,26 @@ import static Management.Questiontype.FillBlank;
 import static Management.Questiontype.MultipleChoice;
 
 public class QuestionImport {
-    private Connection c = DBConncetion.getConnection();
+    private Connection c;
     Statement stmt;
     ResultSet rs = null;
 
-    private void addMultipleChoice() {
+    public void addMultipleChoice() {
         try {
+            c = DBConncetion.getConnection();
             int id;
             String title;
             int time;
             Questiontype type;
             Stats stats;
-            String[] answers = new String[4];
+            String[] answers;
             String correctAnswers;
             stmt = c.createStatement();
             rs = stmt.executeQuery("Select * from mainquestion" +
-                    "inner join multiplechoice" +
+                    " inner join multiplechoice" +
                     " on mainquestion.id = multiplechoice.id");
             while (rs.next()) {
+                answers = new String[4];
                 id = rs.getInt(1);
                 title = rs.getString(2);
                 time = rs.getInt(3);
@@ -42,11 +45,9 @@ public class QuestionImport {
                 QuestionContainer.instance().linkQuestion( new MultipleChoice(title,answers,correctAnswers,time,id,stats));
             }
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() +"1" );
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() + "1" );
+            e.printStackTrace();
             System.exit(0);
         }
-
     }
-
-
 }
