@@ -18,7 +18,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     //THE QUESTION!
     private FillBlank question;
     //component declaration
-    private JTextArea taQuestion;
+    private JLabel lblQuestion;
     private MyButton btnSubmit;
     private JTextField txtInput;
     private JLabel lblOutput;
@@ -32,14 +32,15 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         JPanel pnlTop = new JPanel();
         pnlTop.setLayout(new BorderLayout());
         pnlTop.setBackground(Color.GREEN);
-        taQuestion = new JTextArea(1,0);
-        taQuestion.setFocusable(false);
-        taQuestion.setLineWrap(true);
-        taQuestion.setMargin(new Insets(10, 10, 10, 10));
-        Font fontQuestion = taQuestion.getFont();
+        lblQuestion = new JLabel();
+        lblQuestion.setFocusable(false);
+        lblQuestion.setHorizontalAlignment(JLabel.CENTER);
+        lblQuestion.setBackground(Color.WHITE);
+        lblQuestion.setOpaque(true);
+        Font fontQuestion = lblQuestion.getFont();
         fontQuestion = new Font(fontQuestion.getName(), fontQuestion.getStyle(), fontQuestion.getSize() + 15);
-        taQuestion.setFont(fontQuestion);
-        pnlTop.add(taQuestion, BorderLayout.CENTER);
+        lblQuestion.setFont(fontQuestion);
+        pnlTop.add(lblQuestion, BorderLayout.CENTER);
 
         //the bottom Panel will a gridLayout containing two panels
         JPanel pnlBottom = new JPanel();
@@ -47,7 +48,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         pnlOutput = new JPanel();
 
         //pnlInput
-        pnlInput.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        pnlInput.setLayout(new FlowLayout(FlowLayout.CENTER));
         pnlInput.setBackground(Color.WHITE);
 
         // txtInput
@@ -175,7 +176,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
      * @param text the question as String
      */
     private void setQuestion(String text) {
-        taQuestion.setText(text);
+        lblQuestion.setText(text);
     }
     /////////////////////////////////////////////////////////////////////////////////////
     // ActionListeners and KeyListeners

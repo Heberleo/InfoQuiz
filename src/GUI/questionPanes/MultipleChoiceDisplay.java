@@ -24,7 +24,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	// THE QUESTION!
 	private MultipleChoice question;
 	// component declaration
-	private JTextArea taQuestion;
+	private JLabel lblQuestion;
 	private MyButton btnSubmit;
 	private JCheckBox cb1;
 	private JCheckBox cb2;
@@ -40,14 +40,15 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		// the top Panel will contain the Question
 		JPanel pnlTop = new JPanel();
 		pnlTop.setLayout(new BorderLayout());
-		taQuestion = new JTextArea(1, 0);
-		taQuestion.setFocusable(false);
-		taQuestion.setLineWrap(true);
-		taQuestion.setMargin(new Insets(10, 10, 10, 10));
-		Font fontQuestion = taQuestion.getFont();
+		lblQuestion = new JLabel();
+		lblQuestion.setFocusable(false);
+		lblQuestion.setHorizontalAlignment(JLabel.CENTER);
+		lblQuestion.setBackground(Color.WHITE);
+		lblQuestion.setOpaque(true);
+		Font fontQuestion = lblQuestion.getFont();
 		fontQuestion = new Font(fontQuestion.getName(), fontQuestion.getStyle(), fontQuestion.getSize() + 15);
-		taQuestion.setFont(fontQuestion);
-		pnlTop.add(taQuestion, BorderLayout.CENTER);
+		lblQuestion.setFont(fontQuestion);
+		pnlTop.add(lblQuestion, BorderLayout.CENTER);
 
 		// the bottom Panel will a gridLayout containing two panels
 		JPanel pnlBottom = new JPanel();
@@ -195,10 +196,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		} else {
 			lblOutput.setBackground(Color.RED);
 			StringBuilder answer = new StringBuilder("Richtige Antworten: ");
-			for (int i : question.getCorrectAnswers()) {
-				answer.append(i + ", ");
-			}
-			answer.reverse().delete(0, 2).reverse().append(".");
+			answer.append(question.getCorrectAnswers());
 			lblOutput.setText(answer.toString());
 		}
 	}
@@ -215,25 +213,21 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	}
 
 	/**
-	 * Index will start at 1 and in ascending order
-	 * @return int[] with the index of the selected answers
+	 * Index will start at 1 and in ascending order, as String
+	 * @return null if nothing is selected
 	 */
-	private int[] getSelection() {
-		ArrayList<Integer> selection = new ArrayList<>();
+	private String getSelection() {
+		StringBuilder selection = new StringBuilder();
 		if (cb1.isSelected())
-			selection.add(1);
+			selection.append(1);
 		if (cb2.isSelected())
-			selection.add(2);
+			selection.append(2);
 		if (cb3.isSelected())
-			selection.add(3);
+			selection.append(3);
 		if (cb4.isSelected())
-			selection.add(4);
-
-		int[] temp = new int[selection.size()];
-		for (int i = 0; i < selection.size(); ++i) {
-			temp[i] = selection.get(i);
-		}
-		return  temp;
+			selection.append(4);
+		if (selection.equals("")) return null;
+		return  selection.toString();
 	}
 
 	/**
@@ -241,15 +235,8 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	 * @return true if no answer is selected
 	 */
 	private boolean selectionIsEmpty() {
-		if (cb1.isSelected())
-			return false;
-		if (cb2.isSelected())
-			return false;
-		if (cb3.isSelected())
-			return false;
-		if (cb4.isSelected())
-			return false;
-		return true;
+		if(getSelection().equals(null)) return true;
+		return false;
 	}
 	/**
 	 * Sets the question text.
@@ -257,7 +244,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	 * @param text the question as String
 	 */
 	private void setQuestion(String text) {
-		taQuestion.setText(text);
+		lblQuestion.setText(text);
 	}
 
 
@@ -296,7 +283,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 
     @Override
     public boolean checkAnswer() {
-		return Arrays.equals(question.getCorrectAnswers(), getSelection());
+		return question.getCorrectAnswers().equals(getSelection());
     }
 
 	@Override
