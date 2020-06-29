@@ -5,8 +5,9 @@ public class Stats {
 	private int correctAnswered = 0;
 	private int wrongAnswered = 0;
 
-	public Stats() {
-		
+	public Stats(int correctAnswered, int wrongAnswered) {
+		this.correctAnswered = correctAnswered;
+		this.wrongAnswered = wrongAnswered;
 	}
 	
 	public int getCorrectAnswered() {

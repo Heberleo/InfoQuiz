@@ -13,7 +13,7 @@ public abstract class Question {
 	private boolean marked;
 
 	public Question(String title, int time, int id) {
-		this(title, time, new Stats(), id);
+		this(title, time, new Stats(0,0), id);
 	}
 	
 	public Question(String title, int time, Stats stats, int id) {

@@ -7,6 +7,7 @@ import GUI.resources.MyButton;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 
 import static GUI.resources.MyColor.uni;
 
@@ -28,6 +29,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
     public MainWindow() {
         super("InfoQuiz");
+        ImageIcon icon = new ImageIcon("lib/images/icon32.png");
+        setIconImage(icon.getImage());
         //QuestionPanel
         mainQuestionPanel = new QuestionPanel();
         mainQuestionPanel.setBackground(Color.RED); // Just a Test
@@ -81,7 +84,7 @@ public class MainWindow extends JFrame implements ActionListener {
         add(mainQuestionPanel, BorderLayout.CENTER);
         add(mainButtonPanel, BorderLayout.SOUTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setSize(500,500);
+        setSize(700,700);
         setVisible(true);
 
         // windowListener

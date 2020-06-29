@@ -2,8 +2,8 @@ package Management;
 
 
 import Database.DBConncetion;
-import Database.DBGetQuestion;
 import Database.QuestionContainer;
+import Database.QuestionImport;
 
 import java.beans.PropertyChangeListener;
 
@@ -15,7 +15,8 @@ import java.beans.PropertyChangeListener;
  */
 public class MainManagement {
     private static CurrentQuestion currentQuestion;
-    private static DBGetQuestion questionGetter;
+    private static QuestionImport questionImport;
+
 
 
     /**
@@ -23,13 +24,12 @@ public class MainManagement {
      * beginning, even before the MainWindow constructor.
      */
     public static void init() {
-        questionGetter = new DBGetQuestion();
         currentQuestion = new CurrentQuestion();
+        questionImport = new QuestionImport();
         // Datenbank connect
         DBConncetion.connect();
-        //
-        //QuestionImport.
-        //DBConncetion.closeConnection();
+        questionImport.addMultipleChoice();
+        DBConncetion.closeConnection();
     }
 
     /**
@@ -38,7 +38,7 @@ public class MainManagement {
     public static void close() {
         //DBConncetion.connect();
         //QuestionContainer.instance().writeBack()
-        DBConncetion.closeConnection();
+        //DBConncetion.closeConnection();
         System.exit(0);
     }
 
@@ -47,8 +47,8 @@ public class MainManagement {
      * @return true, if the question is marked
      */
     public static boolean next() {
-        Question q = questionGetter.getRandomQuestion();
-        //Question q = QuestionContainer.instance().next();
+        Question q = QuestionContainer.instance().next();
+        q = (MultipleChoice) q;
         currentQuestion.setQuestion(q);
         return currentQuestion.getQuestion().isMarked();
     }
