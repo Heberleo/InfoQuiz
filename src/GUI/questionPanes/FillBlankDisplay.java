@@ -1,7 +1,7 @@
-package mainWindow.questionPanes;
+package GUI.questionPanes;
 
-import questions.*;
-import resources.MyButton;
+import Management.*;
+import GUI.resources.MyButton;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import static resources.MyColor.uni;
+import static GUI.resources.MyColor.uni;
 
 
 @SuppressWarnings("serial")
@@ -18,7 +18,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     //THE QUESTION!
     private FillBlank question;
     //component declaration
-    private JTextArea taQuestion;
+    private JLabel lblQuestion;
     private MyButton btnSubmit;
     private JTextField txtInput;
     private JLabel lblOutput;
@@ -32,34 +32,41 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         JPanel pnlTop = new JPanel();
         pnlTop.setLayout(new BorderLayout());
         pnlTop.setBackground(Color.GREEN);
-        taQuestion = new JTextArea(1,0);
-        taQuestion.setFocusable(false);
-        taQuestion.setLineWrap(true);
-        taQuestion.setMargin(new Insets(10, 10, 10, 10));
-        Font fontQuestion = taQuestion.getFont();
+        lblQuestion = new JLabel();
+        lblQuestion.setFocusable(false);
+        lblQuestion.setHorizontalAlignment(JLabel.CENTER);
+        lblQuestion.setBackground(Color.WHITE);
+        lblQuestion.setOpaque(true);
+        Font fontQuestion = lblQuestion.getFont();
         fontQuestion = new Font(fontQuestion.getName(), fontQuestion.getStyle(), fontQuestion.getSize() + 15);
-        taQuestion.setFont(fontQuestion);
-        pnlTop.add(taQuestion, BorderLayout.CENTER);
+        lblQuestion.setFont(fontQuestion);
+        pnlTop.add(lblQuestion, BorderLayout.CENTER);
+
         //the bottom Panel will a gridLayout containing two panels
         JPanel pnlBottom = new JPanel();
         JPanel pnlInput = new JPanel();
         pnlOutput = new JPanel();
+
         //pnlInput
-        pnlInput.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        pnlInput.setLayout(new FlowLayout(FlowLayout.CENTER));
         pnlInput.setBackground(Color.WHITE);
+
         // txtInput
         txtInput = new JTextField();
         txtInput.setBorder(new LineBorder(uni));
         txtInput.setPreferredSize(new Dimension(370, 40));
         pnlInput.add(txtInput);
+
         // btnSubmit
         btnSubmit = new MyButton("EINGABE");
         btnSubmit.setPreferredSize(new Dimension(100, 40));
         pnlInput.add(btnSubmit);
+
         //pnlOutput
         clOutput = new CardLayout();
         pnlOutput.setLayout(clOutput);
         pnlOutput.setBackground(Color.WHITE);
+
         // lblOutput
         lblOutput = new JLabel();
         lblOutput.setOpaque(true);
@@ -69,21 +76,26 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         lblOutput.setHorizontalAlignment(SwingConstants.CENTER);
         lblOutput.setVisible(false);
         pnlOutput.add(lblOutput, "lblOutput");
+
         // timer
         timer = new TimerPanel(this);
         pnlOutput.add(timer, "timer");
+
         // pnlEmpty
         pnlEmpty = new JPanel();
         pnlEmpty.setBackground(Color.WHITE);
         pnlOutput.add(pnlEmpty, "empty");
+
         //add to pnlBottom
         pnlBottom.setLayout(new GridLayout(2, 1));
         pnlBottom.add(pnlInput);
         pnlBottom.add(pnlOutput);
+
         //add to the main panel
         setLayout(new GridLayout(2, 1));
         add(pnlTop);
         add(pnlBottom);
+
         //ActionListener
         btnSubmit.addActionListener(this);
         txtInput.addKeyListener(this);
@@ -132,13 +144,15 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     }
 
     /**
-     * Selects timer in the CardLayout
-     * @param visible makes timer visible/ invisible
+     * Selects timer in the CardLayout and starts the timer.
+     * @param visible true makes timer active + visible
      */
     private void showTimer(boolean visible) {
         if (visible) {
+            timer.start(question.getTime());
             clOutput.show(pnlOutput, "timer");
         } else {
+            timer.stop();
             clOutput.show(pnlOutput, "empty");
         }
     }
@@ -162,7 +176,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
      * @param text the question as String
      */
     private void setQuestion(String text) {
-        taQuestion.setText(text);
+        lblQuestion.setText(text);
     }
     /////////////////////////////////////////////////////////////////////////////////////
     // ActionListeners and KeyListeners
@@ -205,11 +219,11 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
 
         showTimer(true);
         enableInput(true);
-        timer.start(question.getTime());
+        txtInput.grabFocus();
     }
     @Override
     public boolean checkType(Question q) {
-        return q.getClass().equals(FillBlank.class);
+        return q.getType().equals(Questiontype.FillBlank);
     }
     @Override
     public boolean checkAnswer() {
@@ -218,9 +232,15 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
 
     @Override
     public void hitSubmit() {
-        setOutput(checkAnswer()); // check output with the question
+        timer.stop();
+        if (checkAnswer()) {
+            setOutput(true);
+            question.getStats().increaseCorrectAnswered();
+        } else {
+            setOutput(false);
+            question.getStats().increaseWrongAnswered();
+        }
         showOutput(true);
         enableInput(false);
-        timer.stop();
     }
 }
