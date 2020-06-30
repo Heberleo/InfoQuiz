@@ -3,10 +3,12 @@ package GUI;
 import GUI.questionPanes.QuestionPanel;
 import Management.MainManagement;
 import GUI.resources.MyButton;
+import Management.QuestionList;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 
 import static GUI.resources.MyColor.uni;
 
@@ -28,6 +30,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
     public MainWindow() {
         super("InfoQuiz");
+        ImageIcon icon = new ImageIcon("lib/images/icon32.png");
+        setIconImage(icon.getImage());
         //QuestionPanel
         mainQuestionPanel = new QuestionPanel();
         mainQuestionPanel.setBackground(Color.RED); // Just a Test
@@ -81,7 +85,7 @@ public class MainWindow extends JFrame implements ActionListener {
         add(mainQuestionPanel, BorderLayout.CENTER);
         add(mainButtonPanel, BorderLayout.SOUTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setSize(500,500);
+        setSize(700,700);
         setVisible(true);
 
         // windowListener
@@ -99,10 +103,10 @@ public class MainWindow extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // Menu actions
             if (e.getSource().equals(myList)) {
-                System.out.println("mylist");
+                MainManagement.setQuestionList(QuestionList.MARKED);
             }
             if (e.getSource().equals(allQuestions)) {
-                System.out.println("Management");
+                MainManagement.setQuestionList(QuestionList.ALL);
             }
             if (e.getSource().equals(wrongQuestions)) {
                 System.out.println("wrong");

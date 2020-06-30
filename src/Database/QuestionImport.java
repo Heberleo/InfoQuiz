@@ -12,24 +12,26 @@ import static Management.Questiontype.FillBlank;
 import static Management.Questiontype.MultipleChoice;
 
 public class QuestionImport {
-    private Connection c = DBConncetion.getConnection();
+    private Connection c;
     Statement stmt;
     ResultSet rs = null;
 
-    private void addMultipleChoice() {
+    public void addMultipleChoice() {
         try {
+            c = DBConncetion.getConnection();
             int id;
             String title;
             int time;
             Questiontype type;
             Stats stats;
-            String[] answers = new String[4];
+            String[] answers;
             String correctAnswers;
             stmt = c.createStatement();
             rs = stmt.executeQuery("Select * from mainquestion" +
-                    "inner join multiplechoice" +
+                    " inner join multiplechoice" +
                     " on mainquestion.id = multiplechoice.id");
             while (rs.next()) {
+                answers = new String[4];
                 id = rs.getInt(1);
                 title = rs.getString(2);
                 time = rs.getInt(3);
@@ -39,14 +41,12 @@ public class QuestionImport {
                 stats = new Stats(rs.getInt(5),rs.getInt(6));
                 for (int i = 0; i < 4; ++i) answers[i] = rs.getString(8 + i);
                 correctAnswers = rs.getString(12);
-                QuestionContainer.instance().linkQuestion( new MultipleChoice(title,answers,correctAnswers,time,id,stats));
+                AllContainer.instance().linkQuestion( new MultipleChoice(title,answers,correctAnswers,time,id,stats));
             }
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() +"1" );
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() + "1" );
+            e.printStackTrace();
             System.exit(0);
         }
-
     }
-
-
 }

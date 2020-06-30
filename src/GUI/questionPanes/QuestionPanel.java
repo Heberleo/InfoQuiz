@@ -18,6 +18,7 @@ public class QuestionPanel extends JPanel implements PropertyChangeListener {
     FillBlankDisplay fillBlankDisplay;
     QuestionDisplay currentDisplay;
     WelcomePanel welcomePanel;
+    ErrorPanel errorPanel;
 
     public QuestionPanel() {
         //Create CardLayout
@@ -35,18 +36,25 @@ public class QuestionPanel extends JPanel implements PropertyChangeListener {
         add(welcomePanel, "welcomePanel");
         cardLayout.show(this, "welcomePanel");
 
+        // ErrorPanel
+        errorPanel = new ErrorPanel();
+        add(errorPanel, "errorPanel");
+
         //add this as PropertyChangeListener to the MainManagement.CurrentQuestion
         MainManagement.addQuestionListener(this);
     }
 
     /**
      * Activates the questionDisplay, that matches the questionType.
-     * @param evt fired, when the currentQuestion in MainMangement is changed.
+     * If the new question is empty, the errorPanel will be shown and nothing else happens.
+     * @param evt fired, when the currentQuestion in MainManagement is changed.
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         Question q = (Question) evt.getNewValue();
-        if (q.getType().equals(Questiontype.MultipleChoice)) {
+        if (q == null) {
+            cardLayout.show(this, "errorPanel");
+        } else if (q.getType().equals(Questiontype.MultipleChoice)) {
             currentDisplay = multipleChoiceDisplay;
             multipleChoiceDisplay.readQuestion(q);
             cardLayout.show(this, "" + Questiontype.MultipleChoice);

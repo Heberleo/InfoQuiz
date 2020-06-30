@@ -39,4 +39,9 @@ public class MultipleChoice extends Question {
 	private void setCorrectAnswers(String correctAnswers) throws IllegalArgumentException {
 		this.correctAnswers = correctAnswers;
 	}
+
+	public String toString() {
+		return (this.hashCode() + ", " + super.getTitle() + ", " + getAnswers()[0] + ", " + getAnswers()[1] + ", " + getAnswers()[2] + ", " + getAnswers()[3] + ", " + getCorrectAnswers());
+	}
+
 }

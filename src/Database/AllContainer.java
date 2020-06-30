@@ -1,27 +1,34 @@
 package Database;
 
 import GUI.questionPanes.IllegalQuestionException;
-import Management.FillBlank;
+import Management.MultipleChoice;
 import Management.Question;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Random;
 
-public class QuestionContainer {
-    private static QuestionContainer container = null;
-    ArrayList<Question> list;
+public class AllContainer {
+    private static AllContainer container = null;
+    private ArrayList<Question> list;
+    private DataManagement dataManagement;
+    Random randy;
 
-    private QuestionContainer() {
+    private AllContainer() {
         list = new ArrayList<Question>();
+        randy = new Random();
+        //dataManagement = new QuestionImport();
     }
 
-    public static QuestionContainer instance() {
+    public static AllContainer instance() {
         if (container == null) {
-            container = new QuestionContainer();
+            container = new AllContainer();
         }
         return container;
     }
 
+    public void load() {
+        dataManagement.load(instance());
+    }
     public void linkQuestion(Question q) {
         //Exception
         if (list.contains(q)) throw new IllegalQuestionException("Doppelte Frage");
@@ -34,10 +41,15 @@ public class QuestionContainer {
     }
 
     public Question next() {
-        return new FillBlank("hallo", "welt", 0);
+        int id = randy.nextInt(list.size() );
+        return list.get(id);
     }
 
     public void sort() {
         list.sort((x, y) -> Math.max(x.getId(), y.getId()));
+    }
+
+    public ArrayList<Question> getList() {
+        return list;
     }
 }
