@@ -3,6 +3,7 @@ package GUI;
 import GUI.questionPanes.QuestionPanel;
 import Management.MainManagement;
 import GUI.resources.MyButton;
+import Management.QuestionList;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,10 +103,10 @@ public class MainWindow extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // Menu actions
             if (e.getSource().equals(myList)) {
-                System.out.println("mylist");
+                MainManagement.setQuestionList(QuestionList.MARKED);
             }
             if (e.getSource().equals(allQuestions)) {
-                System.out.println("Management");
+                MainManagement.setQuestionList(QuestionList.ALL);
             }
             if (e.getSource().equals(wrongQuestions)) {
                 System.out.println("wrong");

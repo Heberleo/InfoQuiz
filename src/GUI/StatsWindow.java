@@ -1,18 +1,13 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.util.Random;
 
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
-import Management.Category;
+import Database.AllContainer;
+import GUI.resources.MyColor;
+import Management.QuestionList;
 
 @SuppressWarnings("serial")
 public class StatsWindow extends JDialog {
@@ -23,7 +18,7 @@ public class StatsWindow extends JDialog {
 	private static Color darkgray = new Color(200, 200, 200);
 	
 	private GridLayout gridLayout = new GridLayout(0, 1, 2, 2);
-	private JComboBox<Category> categories;
+	private JComboBox<QuestionList> categories;
 	private JPanel questionPanel;
 	private JScrollPane scrollpane;
 	private JPanel questions[];
@@ -31,8 +26,12 @@ public class StatsWindow extends JDialog {
 	public StatsWindow(Frame owner) {
 		super(owner, "Statistiken");
 
-		categories = new JComboBox<>(Category.values());
+		categories = new JComboBox<QuestionList>(QuestionList.values());
 		categories.addActionListener(e -> init());
+		categories.setBackground(MyColor.uni);
+		categories.setForeground(Color.WHITE);
+		categories.setFocusable(false);
+		categories.setBorder(BorderFactory.createEmptyBorder());
 		
 		questionPanel = new JPanel(new GridLayout(0, 1));
 		
@@ -45,27 +44,34 @@ public class StatsWindow extends JDialog {
 		this.add(scrollpane, BorderLayout.CENTER);
 		this.setSize(360, 500);
 		this.setVisible(true);
+
+		UIManager.put("ToolTip.background", MyColor.uni);
+		UIManager.put("ToolTip.foreground", Color.WHITE);
+		UIManager.put("ToolTip.border", BorderFactory.createLineBorder(Color.WHITE));
 	}
 
 	private void init() {
 		questionPanel.removeAll();
 		questionPanel.setLayout(gridLayout);
-		
-		/*
-		 * put amount of questions of the selected type as array length
-		 * maybe use something like: length = QuestionGetter.getAmount(this.categories.getSelectedItem())
-		 */
-		questions = new JPanel[r.nextInt(30) + 150];
+		int length = AllContainer.instance().getList().size();
+		questions = new JPanel[length];
 
 		for (int i = 0; i < questions.length; ++i) {
+			int id = AllContainer.instance().getList().get(i).getId();
+			int correct = AllContainer.instance().getList().get(i).getStats().getCorrectAnswered();
+			int wrong = AllContainer.instance().getList().get(i).getStats().getWrongAnswered();
+			String question = AllContainer.instance().getList().get(i).getTitle();
 			questions[i] = new JPanel(new BorderLayout());
 			questions[i].setBackground((i % 2 == 1) ? lightgray : darkgray);
-			questions[i].add(new JLabel("  Frage " + (i + 1) + ": "), BorderLayout.WEST);
-			questions[i].add(new JLabel(5 + "/" + 10 + " richtig beantwortet  "), BorderLayout.EAST);
-			questions[i].setToolTipText("Hier kommt die Frage ausformuliert hin");
+			questions[i].add(new JLabel("  Frage " + (id) + ": "), BorderLayout.WEST);
+			questions[i].add(new JLabel(correct + "/" + wrong + " richtig beantwortet  "), BorderLayout.EAST);
+			questions[i].setToolTipText(question);
+			setPreferredSize(new Dimension(0, 20));
 			questionPanel.add(questions[i]);
 		}
 		this.repaint();
 		this.revalidate();
+
+
 	}
 }
