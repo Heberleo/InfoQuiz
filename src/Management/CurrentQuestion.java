@@ -4,15 +4,18 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class CurrentQuestion {
-    Question q;
-    PropertyChangeSupport propertyChangeSupport;
+    private Question q;
+    private PropertyChangeSupport propertyChangeSupport;
 
     public CurrentQuestion() {
         propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
+    /**
+     * Fires a PropertyChangeEvent that there is a new question.
+     * @param q may be null
+     */
     public void setQuestion(Question q) {
-       if (!checkQuestion(q)) throw  new IllegalArgumentException("Question may not be null.");
        propertyChangeSupport.firePropertyChange("question", this.q, q);
        this.q = q;
     }
@@ -25,7 +28,7 @@ public class CurrentQuestion {
         propertyChangeSupport.addPropertyChangeListener(l);
     }
 
-    private boolean checkQuestion (Question q) {
-        return q != null;
+    public boolean isEmpty() {
+        return q == null;
     }
 }

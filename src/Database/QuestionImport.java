@@ -1,7 +1,6 @@
 package Database;
 
 import Management.MultipleChoice;
-import Management.Question;
 import Management.Questiontype;
 import Management.Stats;
 
@@ -42,7 +41,7 @@ public class QuestionImport {
                 stats = new Stats(rs.getInt(5),rs.getInt(6));
                 for (int i = 0; i < 4; ++i) answers[i] = rs.getString(8 + i);
                 correctAnswers = rs.getString(12);
-                QuestionContainer.instance().linkQuestion( new MultipleChoice(title,answers,correctAnswers,time,id,stats));
+                AllContainer.instance().linkQuestion( new MultipleChoice(title,answers,correctAnswers,time,id,stats));
             }
         } catch (Exception e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() + "1" );

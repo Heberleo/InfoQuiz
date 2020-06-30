@@ -1,8 +1,6 @@
 package GUI;
 
-import Database.QuestionContainer;
 import Management.MainManagement;
-import Management.MultipleChoice;
 
 
 public class MainTest {
