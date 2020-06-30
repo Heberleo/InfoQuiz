@@ -1,71 +1,58 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Frame;
 import java.awt.GridLayout;
-import java.util.Random;
 
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import Management.Category;
+import Database.QuestionContainer;
+import GUI.resources.MyColor;
+import Management.Question;
 
 @SuppressWarnings("serial")
 public class StatsWindow extends JDialog {
-	
-	Random r = new Random();
 
-	private static Color lightgray = new Color(220, 220, 220);
-	private static Color darkgray = new Color(200, 200, 200);
-	
-	private GridLayout gridLayout = new GridLayout(0, 1, 2, 2);
-	private JComboBox<Category> categories;
 	private JPanel questionPanel;
-	private JScrollPane scrollpane;
 	private JPanel questions[];
 
+	/**
+	 * Creates a JDialog that shows statistic about questions
+	 * 
+	 * @param owner Main window
+	 */
 	public StatsWindow(Frame owner) {
 		super(owner, "Statistiken");
 
-		categories = new JComboBox<>(Category.values());
-		categories.addActionListener(e -> init());
-		
-		questionPanel = new JPanel(new GridLayout(0, 1));
-		
-		init();
-		
-		scrollpane = new JScrollPane(questionPanel);
-		
-		this.setLayout(new BorderLayout(5, 5));
-		this.add(categories, BorderLayout.NORTH);
-		this.add(scrollpane, BorderLayout.CENTER);
-		this.setSize(360, 500);
-		this.setVisible(true);
-	}
+		questionPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+		questionPanel.setBackground(MyColor.uni);
 
-	private void init() {
-		questionPanel.removeAll();
-		questionPanel.setLayout(gridLayout);
-		
-		/*
-		 * put amount of questions of the selected type as array length
-		 * maybe use something like: length = QuestionGetter.getAmount(this.categories.getSelectedItem())
-		 */
-		questions = new JPanel[r.nextInt(30) + 150];
+		questions = new JPanel[QuestionContainer.instance().list.size()];
+
+		Question q;
+		int correctAnswered, wrongAnswered;
 
 		for (int i = 0; i < questions.length; ++i) {
+			q = QuestionContainer.instance().list.get(i);
+			correctAnswered = q.getStats().getCorrectAnswered();
+			wrongAnswered = q.getStats().getWrongAnswered();
+
 			questions[i] = new JPanel(new BorderLayout());
-			questions[i].setBackground((i % 2 == 1) ? lightgray : darkgray);
-			questions[i].add(new JLabel("  Frage " + (i + 1) + ": "), BorderLayout.WEST);
-			questions[i].add(new JLabel(5 + "/" + 10 + " richtig beantwortet  "), BorderLayout.EAST);
-			questions[i].setToolTipText("Hier kommt die Frage ausformuliert hin");
+			questions[i].add(new JLabel(" Frage " + q.getId() + ": "), BorderLayout.WEST);
+			questions[i].add(
+					new JLabel(correctAnswered + "/" + (correctAnswered + wrongAnswered) + " richtig beantwortet "),
+					BorderLayout.EAST);
+			questions[i].setToolTipText(q.getTitle());
+
 			questionPanel.add(questions[i]);
 		}
-		this.repaint();
-		this.revalidate();
+
+		this.add(new JScrollPane(questionPanel));
+		this.setSize(300, 400);
+		this.setResizable(false);
+		this.setVisible(true);
 	}
 }
