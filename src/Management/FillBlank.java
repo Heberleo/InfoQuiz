@@ -5,11 +5,11 @@ public class FillBlank extends Question {
 	private String correctAnswer;
 
 	public FillBlank(String title, String correctAnswer, int id) {
-		this(title, correctAnswer, 20, id);
+		this(title, correctAnswer, 20, id, null);
 	}
 	
-	public FillBlank(String title, String correctAnswer, int time, int id) {
-		super(title, time, id);
+	public FillBlank(String title, String correctAnswer, int time, int id, Stats stats) {
+		super(title, time,stats, id);
 		super.type = Questiontype.FillBlank;
 		setCorrectAnswer(correctAnswer);
 	}
@@ -19,6 +19,12 @@ public class FillBlank extends Question {
 	}
 	
 	public void setCorrectAnswer(String correctAnswer) throws IllegalArgumentException {
+		if (!checkCorrectAnswer(correctAnswer)) throw new IllegalArgumentException("Correctanswer must not be null.");
 		this.correctAnswer = correctAnswer;
+	}
+
+	private boolean checkCorrectAnswer(String answer) {
+		if (answer == null || answer.equals("")) return false;
+		return true;
 	}
 }
