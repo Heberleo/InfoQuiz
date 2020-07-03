@@ -55,9 +55,7 @@ public class QuestionListModel extends DefaultListModel{
 		QuestionImport questionImport;
 		questionImport = new QuestionImport();
 		// Datenbank connect
-		DBConncetion.connect();
-		questionImport.addMultipleChoice();
-		DBConncetion.closeConnection();
+		AllContainer.instance().load();
 
 		//AllContainer.instance.import();
 		for(Question q: AllContainer.instance().getList()) {

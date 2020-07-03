@@ -29,6 +29,7 @@ public class AllContainer {
 
     public void load() {
         dataManagement.load(instance());
+        sort();
     }
     public void save() {dataManagement.save(instance());}
     public void linkQuestion(Question q) {
@@ -40,6 +41,7 @@ public class AllContainer {
     public void unlinkQuestion(Question q) {
         //Exception
         list.remove(q);
+        dataManagement.delete(q, instance());
     }
 
     public Question next() {
