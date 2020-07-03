@@ -54,4 +54,14 @@ public class AllContainer {
     public ArrayList<Question> getList() {
         return list;
     }
+
+    public int getNextID() {
+        int id = 0;
+        for (Question q : list) {
+            if (q.getId() > id) {
+                id = q.getId();
+            }
+        }
+        return ++id;
+    }
 }

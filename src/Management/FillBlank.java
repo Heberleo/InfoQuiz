@@ -19,6 +19,12 @@ public class FillBlank extends Question {
 	}
 	
 	public void setCorrectAnswer(String correctAnswer) throws IllegalArgumentException {
+		if (!checkCorrectAnswer(correctAnswer)) throw new IllegalArgumentException("Correctanswer must not be null.");
 		this.correctAnswer = correctAnswer;
+	}
+
+	private boolean checkCorrectAnswer(String answer) {
+		if (answer == null || answer.equals("")) return false;
+		return true;
 	}
 }

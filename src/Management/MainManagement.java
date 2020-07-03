@@ -7,6 +7,7 @@ import Database.MarkedContainer;
 import Database.QuestionImport;
 
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 
 /**
@@ -18,8 +19,6 @@ public class MainManagement {
     private static CurrentQuestion currentQuestion;
     private static QuestionImport questionImport;
     private static QuestionList questionList = QuestionList.ALL;
-
-
 
     /**
      * This Method sets up the Database-connection and initializes this classes attributes. Has to be called at the very
@@ -83,6 +82,10 @@ public class MainManagement {
 
     public static void setQuestionList(QuestionList list) {
         questionList  = list;
+    }
+
+    public static QuestionList getQuestionList() {
+        return questionList;
     }
 
     public static void addQuestionListener(PropertyChangeListener l) {
