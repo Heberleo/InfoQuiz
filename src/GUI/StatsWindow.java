@@ -11,18 +11,15 @@ import Management.QuestionList;
 
 @SuppressWarnings("serial")
 public class StatsWindow extends JDialog {
-	
-	Random r = new Random();
 
-	private static Color lightgray = new Color(220, 220, 220);
-	private static Color darkgray = new Color(200, 200, 200);
-	
-	private GridLayout gridLayout = new GridLayout(0, 1, 2, 2);
-	private JComboBox<QuestionList> categories;
 	private JPanel questionPanel;
-	private JScrollPane scrollpane;
 	private JPanel questions[];
 
+	/**
+	 * Creates a JDialog that shows statistic about questions
+	 * 
+	 * @param owner Main window
+	 */
 	public StatsWindow(Frame owner) {
 		super(owner, "Statistiken");
 
@@ -72,7 +69,6 @@ public class StatsWindow extends JDialog {
 		}
 		this.repaint();
 		this.revalidate();
-
 
 	}
 }
