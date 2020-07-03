@@ -27,10 +27,9 @@ public class MainManagement {
      */
     public static void init() {
         currentQuestion = new CurrentQuestion();
-        questionImport = new QuestionImport();
         // Datenbank connect
         DBConncetion.connect();
-        questionImport.addMultipleChoice();
+        AllContainer.instance().load();
         DBConncetion.closeConnection();
 
         // set the QuestionList to start with
