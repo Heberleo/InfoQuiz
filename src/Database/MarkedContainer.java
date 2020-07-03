@@ -7,7 +7,7 @@ import Management.Question;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MarkedContainer {
+public class MarkedContainer implements QuestionContainer {
 	private static MarkedContainer unique;
 	public ArrayList<Question> list;
 	Random randy;
