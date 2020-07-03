@@ -3,6 +3,7 @@ package Database;
 import GUI.questionPanes.IllegalQuestionException;
 import Management.MultipleChoice;
 import Management.Question;
+import jdk.jfr.DataAmount;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,7 +17,7 @@ public class AllContainer {
     private AllContainer() {
         list = new ArrayList<Question>();
         randy = new Random();
-        //dataManagement = new QuestionImport();
+        dataManagement = new QuestionImport();
     }
 
     public static AllContainer instance() {
@@ -29,6 +30,7 @@ public class AllContainer {
     public void load() {
         dataManagement.load(instance());
     }
+    public void save() {dataManagement.save(instance());}
     public void linkQuestion(Question q) {
         //Exception
         if (list.contains(q)) throw new IllegalQuestionException("Doppelte Frage");
