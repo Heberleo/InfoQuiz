@@ -37,32 +37,35 @@ public class MainWindow extends JFrame implements ActionListener {
         mainQuestionPanel.setBackground(Color.RED); // Just a Test
         //ButtonPanel
         markedButton = new MyButton("unmarked");
+        markedButton.setPreferredSize(new Dimension(100, 30));
         markedButton.addActionListener(this);
         nextButton = new MyButton("next");
+        nextButton.setPreferredSize(new Dimension(100,30));
         nextButton.addActionListener(this);
         mainButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         mainButtonPanel.setBackground(Color.WHITE);
-        mainButtonPanel.add(nextButton);
         mainButtonPanel.add(markedButton);
         mainButtonPanel.add(nextButton);
         // Menu
         menuBar = new JMenuBar();
         menuBar.setBackground(uni);
-        lists = new JMenu("Fragen");
+        lists = new JMenu("Alle Fragen");
+        lists.setPreferredSize(new Dimension(105,20));
         lists.setBackground(uni);
         lists.setForeground(Color.WHITE);
         stats = new JMenuItem("Statistiken");
         stats.setBackground(uni);
         stats.setForeground(Color.WHITE);
-        stats.setMaximumSize(stats.getPreferredSize()); //to prevent the MenuItems fom scaling
+        stats.setPreferredSize(new Dimension(70, 20));
+        stats.setMaximumSize(new Dimension(70, 20));
         stats.addActionListener(this);
         dailyChallenge = new JMenuItem("Herausforderungen");
         dailyChallenge.setBackground(uni);
         dailyChallenge.setForeground(Color.WHITE);
-        dailyChallenge.setMaximumSize(dailyChallenge.getPreferredSize());
+        //dailyChallenge.setMaximumSize(dailyChallenge.getPreferredSize());
         dailyChallenge.addActionListener(this);
         menuBar.add(lists);
-            myList = new JMenuItem ("Meine Fragen");
+            myList = new JMenuItem ("Markierte Fragen");
             myList.setBackground(Color.WHITE);
             myList.setForeground(uni);
             myList.addActionListener(this);
@@ -70,13 +73,8 @@ public class MainWindow extends JFrame implements ActionListener {
             allQuestions.setBackground(Color.WHITE);
             allQuestions.setForeground(uni);
             allQuestions.addActionListener(this);
-            wrongQuestions = new JMenuItem ("Falsche Fragen");
-            wrongQuestions.setBackground(Color.WHITE);
-            wrongQuestions.setForeground(uni);
-            wrongQuestions.addActionListener(this);
         lists.add(myList);
         lists.add(allQuestions);
-        lists.add(wrongQuestions);
         menuBar.add(stats);
         menuBar.add(dailyChallenge);
         setJMenuBar(menuBar);
@@ -104,12 +102,11 @@ public class MainWindow extends JFrame implements ActionListener {
         // Menu actions
             if (e.getSource().equals(myList)) {
                 MainManagement.setQuestionList(QuestionList.MARKED);
+                setQuestionMenu(QuestionList.MARKED);
             }
             if (e.getSource().equals(allQuestions)) {
                 MainManagement.setQuestionList(QuestionList.ALL);
-            }
-            if (e.getSource().equals(wrongQuestions)) {
-                System.out.println("wrong");
+                setQuestionMenu(QuestionList.ALL);
             }
             if (e.getSource().equals(stats)) {
                 System.out.println("stats");
@@ -138,5 +135,9 @@ public class MainWindow extends JFrame implements ActionListener {
         } else {
             markedButton.setText("unmarked");
         }
+    }
+
+    private void setQuestionMenu(QuestionList filter) {
+        lists.setText(filter.toString());
     }
 }

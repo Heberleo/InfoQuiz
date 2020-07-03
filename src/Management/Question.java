@@ -29,7 +29,13 @@ public abstract class Question {
 	}
 
 	public void setTitle(String title) throws IllegalArgumentException {
+		if (!checkTitle(title)) throw new IllegalArgumentException("title must not be null.");
 		this.title = title;
+	}
+
+	private boolean checkTitle(String title) {
+		if (title == null || title.equals("")) return false;
+		return true;
 	}
 	
 	public Questiontype getType() {

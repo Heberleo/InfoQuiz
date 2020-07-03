@@ -31,7 +31,7 @@ public class StatsWindow extends JDialog {
 		categories.setBackground(MyColor.uni);
 		categories.setForeground(Color.WHITE);
 		categories.setFocusable(false);
-		categories.setBorder(BorderFactory.createEmptyBorder());
+
 		
 		questionPanel = new JPanel(new GridLayout(0, 1));
 		
@@ -47,6 +47,7 @@ public class StatsWindow extends JDialog {
 
 		UIManager.put("ToolTip.background", MyColor.uni);
 		UIManager.put("ToolTip.foreground", Color.WHITE);
+		UIManager.put("ComboBox.selectionBackground", MyColor.uni);
 		UIManager.put("ToolTip.border", BorderFactory.createLineBorder(Color.WHITE));
 	}
 
