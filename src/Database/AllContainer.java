@@ -8,7 +8,7 @@ import jdk.jfr.DataAmount;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class AllContainer {
+public class AllContainer implements QuestionContainer {
     private static AllContainer container = null;
     private ArrayList<Question> list;
     private DataManagement dataManagement;
