@@ -5,11 +5,11 @@ public class FillBlank extends Question {
 	private String correctAnswer;
 
 	public FillBlank(String title, String correctAnswer, int id) {
-		this(title, correctAnswer, 20, id, null);
+		this(title, correctAnswer, 20, id, null, false);
 	}
 	
-	public FillBlank(String title, String correctAnswer, int time, int id, Stats stats) {
-		super(title, time,stats, id);
+	public FillBlank(String title, String correctAnswer, int time, int id, Stats stats, boolean marked) {
+		super(title, time,stats, id,marked);
 		super.type = Questiontype.FillBlank;
 		setCorrectAnswer(correctAnswer);
 	}
