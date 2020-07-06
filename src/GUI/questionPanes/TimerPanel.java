@@ -22,13 +22,16 @@ public class TimerPanel extends JPanel implements ActionListener {
 	 */
 	public TimerPanel(QuestionDisplay parent) {
 		this.lblSeconds = new JLabel();
+		lblSeconds.setFont(new Font(lblSeconds.getFont().getName(), lblSeconds.getFont().getStyle(), 30));
 		this.parent = parent;
 
 		timer = new Timer(1000, this);
 
 		this.setBackground(Color.WHITE);
 		this.setLayout(new GridBagLayout());
-		this.add(new JLabel("Sekunden �brig: "));
+		JLabel lblClock = new JLabel("\u23F3 ");
+		lblClock.setFont(new Font(lblClock.getFont().getName(), lblClock.getFont().getStyle(), 30));
+		this.add(lblClock);
 		this.add(this.lblSeconds);
 	}
 
