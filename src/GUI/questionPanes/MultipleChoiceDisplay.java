@@ -37,6 +37,8 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	private JPanel pnlEmpty;
 
 	public MultipleChoiceDisplay() {
+		GridBagConstraints gbc;
+
 		// the top Panel will contain the Question
 		JPanel pnlTop = new JPanel();
 		pnlTop.setLayout(new BorderLayout());
@@ -46,21 +48,17 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		lblQuestion.setBackground(Color.WHITE);
 		lblQuestion.setOpaque(true);
 		Font fontQuestion = lblQuestion.getFont();
-		fontQuestion = new Font(fontQuestion.getName(), fontQuestion.getStyle(), fontQuestion.getSize() + 15);
+		fontQuestion = new Font(fontQuestion.getName(), fontQuestion.getStyle(), 40);
 		lblQuestion.setFont(fontQuestion);
 		pnlTop.add(lblQuestion, BorderLayout.CENTER);
 
 		// the bottom Panel will a gridLayout containing two panels
-		JPanel pnlBottom = new JPanel();
 		JPanel pnlInput = new JPanel();
 		pnlOutput = new JPanel();
 
 			// pnlInput
-			pnlInput.setLayout(new GridLayout(1, 2));
+			pnlInput.setLayout(new GridBagLayout());
 
-					// CheckBoxes & Labels in pnlLeft
-					JPanel pnlLeft = new JPanel();
-					pnlLeft.setLayout(new BoxLayout(pnlLeft, BoxLayout.Y_AXIS));
 					cb1 = new JCheckBox("Antwort 1");
 					cb2 = new JCheckBox("Antwort 2");
 					cb3 = new JCheckBox("Antwort 3");
@@ -73,20 +71,52 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 					cb2.setBackground(Color.WHITE);
 					cb3.setBackground(Color.WHITE);
 					cb4.setBackground(Color.WHITE);
-					pnlLeft.add(cb1);
-					pnlLeft.add(cb2);
-					pnlLeft.add(cb3);
-					pnlLeft.add(cb4);
-					pnlInput.add(pnlLeft);
+					cb1.setPreferredSize(new Dimension(300, 40));
+					cb2.setPreferredSize(new Dimension(300, 40));
+					cb3.setPreferredSize(new Dimension(300, 40));
+					cb3.setPreferredSize(new Dimension(300, 40));
+					cb1.setMinimumSize(new Dimension(300, 40));
+					cb2.setMinimumSize(new Dimension(300, 40));
+					cb3.setMinimumSize(new Dimension(300, 40));
+					cb3.setMinimumSize(new Dimension(300, 40));
+					cb1.setFont(new Font(cb1.getFont().getName(),  cb1.getFont().getStyle(), (int) ( cb1.getFont().getSize() * 1.5)));
+					cb2.setFont(new Font(cb2.getFont().getName(),  cb2.getFont().getStyle(), (int) (cb2.getFont().getSize() * 1.5)));
+					cb3.setFont(new Font(cb3.getFont().getName(),  cb3.getFont().getStyle(), (int) (cb3.getFont().getSize() * 1.5)));
+					cb4.setFont(new Font(cb4.getFont().getName(),  cb4.getFont().getStyle(), (int) (cb4.getFont().getSize() * 1.5)));
+					gbc = new GridBagConstraints();
+					gbc.gridx = 0;
+					gbc.gridy = 0;
+					gbc.weightx = 1.0;
+					gbc.weighty = 0.0;
+					gbc.fill = GridBagConstraints.HORIZONTAL;
+					gbc.anchor = GridBagConstraints.WEST;
+					gbc.insets = new Insets(0, 15, 0,15);
+					pnlInput.add(cb1, gbc);
+					gbc.gridx = 1;
+					gbc.gridy = 0;
+					pnlInput.add(cb2, gbc);
+					gbc.gridx = 0;
+					gbc.gridy = 1;
+					pnlInput.add(cb3, gbc);
+					gbc.gridx = 1;
+					gbc.gridy = 1;
+					pnlInput.add(cb4, gbc);
 
 					// btnSubmit in pnlRight
-					JPanel pnlRight = new JPanel(new GridLayout(2, 1));
-					pnlRight.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
 					btnSubmit = new MyButton("EINGABE");
+					btnSubmit.setPreferredSize(new Dimension(100, 30));
+					btnSubmit.setMinimumSize(new Dimension(100, 30));
 					btnSubmit.setFocusable(false);
-					btnSubmit.setPreferredSize(new Dimension(100, 40));
-					pnlRight.add(btnSubmit);
-					pnlInput.add(pnlRight);
+					gbc = new GridBagConstraints();
+					gbc.insets = new Insets(15, 15, 15,15);
+					gbc.gridx = 1;
+					gbc.gridy = 2;
+					gbc.weightx = 0.0;
+					gbc.weighty = 0.0;
+					gbc.anchor = GridBagConstraints.LAST_LINE_END;
+					gbc.fill = GridBagConstraints.VERTICAL;
+					pnlInput.add(btnSubmit, gbc);
 
 			//pnlOutput
 			clOutput = new CardLayout();
@@ -111,14 +141,18 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 				pnlOutput.add(pnlEmpty, "empty");
 
 		// add to pnlBottom
-		pnlBottom.setLayout(new GridLayout(2, 1));
-		pnlBottom.add(pnlInput);
-		pnlBottom.add(pnlOutput);
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.gridwidth = 2;
+		gbc.weighty = 1.0;
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.BOTH;
+		pnlInput.add(pnlOutput, gbc);
 
 		// add to the main panel
 		setLayout(new GridLayout(2, 1));
 		add(pnlTop);
-		add(pnlBottom);
+		add(pnlInput);
 		setVisible(true);
 
 		// ActionListeners
@@ -126,10 +160,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 
 		// backgrounds to White
 		setBackground(Color.WHITE);
-		pnlBottom.setBackground(Color.WHITE);
 		pnlInput.setBackground(Color.WHITE);
-		pnlLeft.setBackground(Color.WHITE);
-		pnlRight.setBackground(Color.WHITE);
 		pnlTop.setBackground(Color.WHITE);
 		pnlOutput.setBackground(Color.WHITE);
 	}
@@ -195,8 +226,17 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 			lblOutput.setText("RICHTIG");
 		} else {
 			lblOutput.setBackground(Color.RED);
-			StringBuilder answer = new StringBuilder("Richtige Antworten: ");
-			answer.append(question.getCorrectAnswers());
+			StringBuilder answer = new StringBuilder("\"");
+
+			StringBuilder correctAnswers = new StringBuilder(question.getCorrectAnswers());
+			System.out.println(correctAnswers);
+			while (!correctAnswers.toString().equals("")) {
+				int i = Integer.parseInt("" + correctAnswers.charAt(0));
+				correctAnswers.deleteCharAt(0);
+				answer.append(question.getAnswers()[i - 1]);
+				answer.append(", ");
+			}
+			answer = answer.reverse().replace(0,2, "").reverse().append("\"");
 			lblOutput.setText(answer.toString());
 		}
 	}

@@ -11,7 +11,7 @@ public class QuestionListModel extends DefaultListModel{
 	@Override
 	public Object getElementAt(int index) {
 		Question q = (Question) super.getElementAt(index);
-		return q.getId() + ". (" + q.getType().toString() + ") " + q.getTitle();
+		return ("(" + q.getType().toString() + ") " + q.getTitle());
 	}
 
 	public Question getQuestionAt(int index) {
