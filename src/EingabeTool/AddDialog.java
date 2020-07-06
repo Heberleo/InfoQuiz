@@ -22,9 +22,9 @@ public class AddDialog extends AbstractDialog {
 					try {
 						Question q;
 						if(getQuestionType().equals(Questiontype.FillBlank)) {
-							q = new FillBlank(getQuestionTitle(), getCorrectAnswer(), getTime(), AllContainer.instance().getNextID(), new Stats(0,0));
+							q = new FillBlank(getQuestionTitle(), getCorrectAnswer(), getTime(), AllContainer.instance().getNextID(), new Stats(0,0),false);
 						} else {
-							q = new MultipleChoice(getQuestionTitle(), getAnswers(), getCorrectAnswer(), getTime(), AllContainer.instance().getNextID(), new Stats(0,0));
+							q = new MultipleChoice(getQuestionTitle(), getAnswers(), getCorrectAnswer(), getTime(), AllContainer.instance().getNextID(), new Stats(0,0),false);
 						}
 						model.newElement(q);
 						dispose();

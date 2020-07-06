@@ -46,7 +46,7 @@ public class StatsWindow extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				switch (categories.getSelectedItem().toString()) {
-					case "MARKED":
+					case "Markierte Fragen":
 						container = MarkedContainer.instance();
 						break;
 					default:
