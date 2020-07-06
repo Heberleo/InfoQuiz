@@ -110,7 +110,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         gbc.weighty = 1.0;
         gbc.weightx = 1.0;
         gbc.gridwidth = 3;
-        gbc.insets = new Insets(0, 0, 0,0);
+        gbc.insets = new Insets(15, 15, 15,15);
         gbc.fill = GridBagConstraints.BOTH;
         pnlInput.add(pnlOutput, gbc);
 
@@ -199,8 +199,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
      * Sets the question text.
      * @param text the question as String
      */
-    private void setQuestion(String text) {
-        lblQuestion.setText(text);
+    private void setQuestion(String text) { lblQuestion.setText("<html>" + text + "</html>");
     }
     /////////////////////////////////////////////////////////////////////////////////////
     // ActionListeners and KeyListeners
@@ -260,9 +259,11 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         if (checkAnswer()) {
             setOutput(true);
             question.getStats().increaseCorrectAnswered();
+            PointCounter.instance().increasePoints();
         } else {
             setOutput(false);
             question.getStats().increaseWrongAnswered();
+            PointCounter.instance().decreasePoints();
         }
         showOutput(true);
         enableInput(false);

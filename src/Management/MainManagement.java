@@ -29,6 +29,7 @@ public class MainManagement {
         // Datenbank connect
         DBConncetion.connect();
         AllContainer.instance().load();
+        PointCounter.instance().load();
         DBConncetion.closeConnection();
 
         // set the QuestionList to start with
@@ -39,9 +40,10 @@ public class MainManagement {
      * This Method will close the Database-connection and shut down the programm.
      */
     public static void close() {
-        //DBConncetion.connect();
-        //QuestionContainer.instance().writeBack()
-        //DBConncetion.closeConnection();
+        DBConncetion.connect();
+        AllContainer.instance().save();
+        PointCounter.instance().savePoints();
+        DBConncetion.closeConnection();
         System.exit(0);
     }
 

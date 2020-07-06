@@ -208,6 +208,8 @@ public class QuestionImport implements DataManagement {
     }
     }
 
+
+    @Override
     public void saveScore(int score) {
         try {
             Connection c = DBConncetion.getConnection();
@@ -223,7 +225,7 @@ public class QuestionImport implements DataManagement {
         }
     }
 
-    public void getScore() {
+    public int getScore() {
         try {
             Connection c = DBConncetion.getConnection();
             String sql = "Select *\n" +
@@ -234,15 +236,14 @@ public class QuestionImport implements DataManagement {
             stmt = c.createStatement();
             rs = stmt.executeQuery(sql);
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("date"));
-            System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(date));
-            System.out.println(rs.getInt("score"));
+            return rs.getInt("score");
 
         } catch (Exception e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() + "2" );
             e.printStackTrace();
             System.exit(0);
         }
-
+        return 0;
     }
 }
 
