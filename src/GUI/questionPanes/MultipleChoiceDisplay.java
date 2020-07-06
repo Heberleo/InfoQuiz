@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
+import GUI.resources.MyColor;
 import Management.MultipleChoice;
 import Management.PointCounter;
 import Management.Question;
@@ -80,7 +81,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 					cb2.setMinimumSize(new Dimension(300, 40));
 					cb3.setMinimumSize(new Dimension(300, 40));
 					cb3.setMinimumSize(new Dimension(300, 40));
-					cb1.setFont(new Font(cb1.getFont().getName(),  cb1.getFont().getStyle(), (int) ( cb1.getFont().getSize() * 1.5)));
+					cb1.setFont(new Font(cb1.getFont().getName(),  cb1.getFont().getStyle(), (int) (cb1.getFont().getSize() * 1.5)));
 					cb2.setFont(new Font(cb2.getFont().getName(),  cb2.getFont().getStyle(), (int) (cb2.getFont().getSize() * 1.5)));
 					cb3.setFont(new Font(cb3.getFont().getName(),  cb3.getFont().getStyle(), (int) (cb3.getFont().getSize() * 1.5)));
 					cb4.setFont(new Font(cb4.getFont().getName(),  cb4.getFont().getStyle(), (int) (cb4.getFont().getSize() * 1.5)));
@@ -147,6 +148,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		gbc.gridwidth = 2;
 		gbc.weighty = 1.0;
 		gbc.weightx = 1.0;
+		gbc.insets = new Insets(15, 15, 15,15);
 		gbc.fill = GridBagConstraints.BOTH;
 		pnlInput.add(pnlOutput, gbc);
 
@@ -247,10 +249,10 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	 * @param a answers
 	 */
 	private void setAnswers(String[] a) {
-		cb1.setText(a[0]);
-		cb2.setText(a[1]);
-		cb3.setText(a[2]);
-		cb4.setText(a[3]);
+		cb1.setText("<html>" + a[0] + "</html>");
+		cb2.setText("<html>" + a[1] + "</html>");
+		cb3.setText("<html>" + a[2] + "</html>");
+		cb4.setText("<html>" + a[3] + "</html>");
 	}
 
 	/**
@@ -285,7 +287,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	 * @param text the question as String
 	 */
 	private void setQuestion(String text) {
-		lblQuestion.setText(text);
+		lblQuestion.setText("<html>" + text + "</html>");
 	}
 
 
