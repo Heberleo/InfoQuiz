@@ -3,13 +3,12 @@ package GUI;
 import Database.AllContainer;
 import Database.DBConncetion;
 import Database.QuestionImport;
-import Management.MainManagement;
-import Management.Question;
-import Management.Stats;
+import Management.*;
 
 import java.sql.Connection;
 import java.sql.Connection;
 import java.sql.Statement;
+
 
 
 public class MainTest {

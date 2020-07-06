@@ -13,15 +13,15 @@ public abstract class Question {
 	private boolean marked;
 
 	public Question(String title, int time, int id) {
-		this(title, time, new Stats(0,0), id);
+		this(title, time, new Stats(0,0), id, false);
 	}
 	
-	public Question(String title, int time, Stats stats, int id) {
+	public Question(String title, int time, Stats stats, int id, boolean marked) {
 		setTitle(title);
 		setStats(stats);
 		setTime(time);
 		setId(id);
-		setMarked(false); // needs to be added as argument
+		setMarked(marked); // needs to be added as argument
 	}
 
 	public String getTitle() {

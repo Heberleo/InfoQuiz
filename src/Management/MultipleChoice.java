@@ -8,11 +8,11 @@ public class MultipleChoice extends Question {
 	private String correctAnswers;
 	
 	public MultipleChoice(String title, String[] answers, String correctAnswers, int id) {
-		this(title, answers, correctAnswers, 20, id, new Stats(0,0));
+		this(title, answers, correctAnswers, 20, id, new Stats(0,0),false);
 	}
 
-	public MultipleChoice(String title, String[] answers, String correctAnswers, int time, int id, Stats stats) {
-		super(title, time,stats,id);
+	public MultipleChoice(String title, String[] answers, String correctAnswers, int time, int id, Stats stats, boolean marked) {
+		super(title, time,stats,id,marked);
 		super.type = Questiontype.MultipleChoice;
 		setAnswers(answers);
 		setCorrectAnswers(correctAnswers);
