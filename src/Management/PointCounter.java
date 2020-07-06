@@ -17,8 +17,6 @@ public class PointCounter {
 
 	private PointCounter() {
 		pcs = new PropertyChangeSupport(this);
-		dataManagement = new QuestionImport();
-//		setPoints(dataManagement.getScore());
 	}
 
 	public static PointCounter instance() {
@@ -27,6 +25,10 @@ public class PointCounter {
 		return unique;
 	}
 
+	public void load() {
+		dataManagement = new QuestionImport();
+		setPoints(dataManagement.getScore());
+	}
 	public int getPoints() {
 		return points;
 	}
@@ -40,7 +42,7 @@ public class PointCounter {
 	}
 
 	public void increasePoints() {
-		if (this.points < 999)
+		if (this.points < 9999)
 			setPoints(this.points + 1);
 	}
 
@@ -54,6 +56,6 @@ public class PointCounter {
 	}
 	
 	public void savePoints() {
-//		dataManagement.saveScore(this.points);
+		dataManagement.saveScore(this.points);
 	}
 }
