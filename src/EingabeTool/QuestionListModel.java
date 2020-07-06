@@ -2,16 +2,19 @@ package EingabeTool;
 
 import Database.AllContainer;
 import Database.DBConncetion;
+import Database.DataManagement;
 import Database.QuestionImport;
 import Management.Question;
 
 import javax.swing.*;
 
 public class QuestionListModel extends DefaultListModel{
+	private DataManagement dataManagement = new QuestionImport();
+
 	@Override
 	public Object getElementAt(int index) {
 		Question q = (Question) super.getElementAt(index);
-		return q.getId() + ". (" + q.getType().toString() + ") " + q.getTitle();
+		return ("(" + q.getType().toString() + ") " + q.getTitle());
 	}
 
 	public Question getQuestionAt(int index) {
@@ -21,12 +24,14 @@ public class QuestionListModel extends DefaultListModel{
 
 	public void updateElement(Question q) {
 		// Update in der Datenbank
+		dataManagement.edit(q);
 		fireContentsChanged(this, q.getId(), q.getId());
 	}
 
 	public void newElement(Question q) {
 		addElement(q);
 		AllContainer.instance().linkQuestion(q);
+		dataManagement.add(q);
 		fireIntervalAdded(this, q.getId(), q.getId());
 	}
 
@@ -46,6 +51,7 @@ public class QuestionListModel extends DefaultListModel{
 	public Object remove(int index) {
 		Question q = (Question) super.getElementAt(index);
 		AllContainer.instance().unlinkQuestion(q);
+		dataManagement.delete(q);
 		super.remove(index);
 		super.fireIntervalRemoved(this, index, index);
 		return q;

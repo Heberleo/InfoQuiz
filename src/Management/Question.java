@@ -1,7 +1,5 @@
 package Management;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 public abstract class Question {
 
@@ -21,7 +19,7 @@ public abstract class Question {
 		setStats(stats);
 		setTime(time);
 		setId(id);
-		setMarked(marked); // needs to be added as argument
+		setMarked(marked);
 	}
 
 	public String getTitle() {
