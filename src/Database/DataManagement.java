@@ -8,4 +8,6 @@ public interface DataManagement {
 	public void delete(Question q);
 	public void add(Question q);
 	public void edit(Question q);
+	public void saveScore(int score);
+	public int  getScore();
 }
