@@ -46,6 +46,7 @@ public class MainWindow extends JFrame implements ActionListener {
         mainButtonPanel.setBackground(Color.WHITE);
         mainButtonPanel.add(markedButton);
         mainButtonPanel.add(nextButton);
+        mainButtonPanel.setBorder(BorderFactory.createEmptyBorder(0,0,5,10));
         // Menu
         menuBar = new JMenuBar();
         menuBar.setBackground(uni);
