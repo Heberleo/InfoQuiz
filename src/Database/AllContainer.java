@@ -41,7 +41,6 @@ public class AllContainer implements QuestionContainer {
     public void unlinkQuestion(Question q) {
         //Exception
         list.remove(q);
-        dataManagement.delete(q);
     }
 
     public Question next() {

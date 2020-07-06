@@ -28,39 +28,57 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     private JPanel pnlEmpty;
     //
     public FillBlankDisplay() {
+        GridBagConstraints gbc;
         //the top Panel will contain the Question
         JPanel pnlTop = new JPanel();
         pnlTop.setLayout(new BorderLayout());
-        pnlTop.setBackground(Color.GREEN);
         lblQuestion = new JLabel();
         lblQuestion.setFocusable(false);
         lblQuestion.setHorizontalAlignment(JLabel.CENTER);
         lblQuestion.setBackground(Color.WHITE);
         lblQuestion.setOpaque(true);
         Font fontQuestion = lblQuestion.getFont();
-        fontQuestion = new Font(fontQuestion.getName(), fontQuestion.getStyle(), fontQuestion.getSize() + 15);
+        fontQuestion = new Font(fontQuestion.getName(), fontQuestion.getStyle(), 40);
         lblQuestion.setFont(fontQuestion);
         pnlTop.add(lblQuestion, BorderLayout.CENTER);
 
         //the bottom Panel will a gridLayout containing two panels
-        JPanel pnlBottom = new JPanel();
         JPanel pnlInput = new JPanel();
         pnlOutput = new JPanel();
 
         //pnlInput
-        pnlInput.setLayout(new FlowLayout(FlowLayout.CENTER));
+        pnlInput.setLayout(new GridBagLayout());
         pnlInput.setBackground(Color.WHITE);
 
         // txtInput
         txtInput = new JTextField();
         txtInput.setBorder(new LineBorder(uni));
-        txtInput.setPreferredSize(new Dimension(370, 40));
-        pnlInput.add(txtInput);
+        txtInput.setPreferredSize(new Dimension(100, 70));
+        txtInput.setFont(new Font(txtInput.getFont().getName(), txtInput.getFont().getStyle(), txtInput.getFont().getSize() * 2));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 2;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.0;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(0, 15, 0,15);
+        pnlInput.add(txtInput, gbc);
 
         // btnSubmit
         btnSubmit = new MyButton("EINGABE");
-        btnSubmit.setPreferredSize(new Dimension(100, 40));
-        pnlInput.add(btnSubmit);
+        btnSubmit.setPreferredSize(new Dimension(100, 30));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.weightx = 0.0;
+        gbc.weighty = 0.0;
+        gbc.insets = new Insets(25, 15, 15,15);
+        gbc.anchor = GridBagConstraints.LAST_LINE_END;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        pnlInput.add(btnSubmit, gbc);
 
         //pnlOutput
         clOutput = new CardLayout();
@@ -74,7 +92,6 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         fontOutput = new Font(fontOutput.getName(), fontOutput.getStyle(), fontOutput.getSize() + 15);
         lblOutput.setFont(fontOutput);
         lblOutput.setHorizontalAlignment(SwingConstants.CENTER);
-        lblOutput.setVisible(false);
         pnlOutput.add(lblOutput, "lblOutput");
 
         // timer
@@ -87,14 +104,21 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         pnlOutput.add(pnlEmpty, "empty");
 
         //add to pnlBottom
-        pnlBottom.setLayout(new GridLayout(2, 1));
-        pnlBottom.add(pnlInput);
-        pnlBottom.add(pnlOutput);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.weighty = 1.0;
+        gbc.weightx = 1.0;
+        gbc.gridwidth = 3;
+        gbc.insets = new Insets(15, 15, 15,15);
+        gbc.fill = GridBagConstraints.BOTH;
+        pnlInput.add(pnlOutput, gbc);
 
         //add to the main panel
         setLayout(new GridLayout(2, 1));
         add(pnlTop);
-        add(pnlBottom);
+        add(pnlInput);
+        setVisible(true);
 
         //ActionListener
         btnSubmit.addActionListener(this);
@@ -167,7 +191,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
             lblOutput.setText("RICHTIG");
         } else {
             lblOutput.setBackground(Color.RED);
-            lblOutput.setText("Richtige Antwort: " + question.getCorrectAnswer());
+            lblOutput.setText("\"" + question.getCorrectAnswer() + "\"");
         }
     }
 
@@ -175,8 +199,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
      * Sets the question text.
      * @param text the question as String
      */
-    private void setQuestion(String text) {
-        lblQuestion.setText(text);
+    private void setQuestion(String text) { lblQuestion.setText("<html>" + text + "</html>");
     }
     /////////////////////////////////////////////////////////////////////////////////////
     // ActionListeners and KeyListeners
@@ -236,9 +259,11 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         if (checkAnswer()) {
             setOutput(true);
             question.getStats().increaseCorrectAnswered();
+            PointCounter.instance().increasePoints();
         } else {
             setOutput(false);
             question.getStats().increaseWrongAnswered();
+            PointCounter.instance().decreasePoints();
         }
         showOutput(true);
         enableInput(false);
