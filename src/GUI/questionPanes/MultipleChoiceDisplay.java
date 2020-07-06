@@ -15,6 +15,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import Management.MultipleChoice;
+import Management.PointCounter;
 import Management.Question;
 import GUI.resources.MyButton;
 import Management.Questiontype;
@@ -333,9 +334,11 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		if (checkAnswer()) {
 			setOutput(true);
 			question.getStats().increaseCorrectAnswered();
+			PointCounter.instance().increasePoints();
 		} else {
 			setOutput(false);
 			question.getStats().increaseWrongAnswered();
+			PointCounter.instance().decreasePoints();
 		}
 		showOutput(true);
 		enableInput(false);
