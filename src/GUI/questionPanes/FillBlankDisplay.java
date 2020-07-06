@@ -236,9 +236,11 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         if (checkAnswer()) {
             setOutput(true);
             question.getStats().increaseCorrectAnswered();
+            PointCounter.instance().increasePoints();
         } else {
             setOutput(false);
             question.getStats().increaseWrongAnswered();
+            PointCounter.instance().decreasePoints();
         }
         showOutput(true);
         enableInput(false);
