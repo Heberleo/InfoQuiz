@@ -1,8 +1,6 @@
 package Database;
 
 import Management.*;
-
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,9 +46,7 @@ public class QuestionImport implements DataManagement {
                 pstmt.executeUpdate();
             }
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() + "1" );
-            e.printStackTrace();
-            System.exit(0);
+            throw new LoadSaveException("Error while saving: " + e.getMessage());
         }
     }
 
@@ -77,9 +73,7 @@ public class QuestionImport implements DataManagement {
             pstmt.setString(1,String.valueOf(q.getId()));
             pstmt.executeUpdate();
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() + "1" );
-            e.printStackTrace();
-            System.exit(0);
+            throw new LoadSaveException("Delete: " + e.getMessage());
         }
     }
 
@@ -123,9 +117,7 @@ public class QuestionImport implements DataManagement {
                 pstmt.executeUpdate();
             }
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() + "1" );
-            e.printStackTrace();
-            System.exit(0);
+            throw new LoadSaveException("Error while adding");
         }
     }
 
@@ -169,9 +161,7 @@ public class QuestionImport implements DataManagement {
                 con.linkQuestion( new MultipleChoice(title,answers,correctAnswers,time,id,stats,marked));
             }
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() + "1" );
-            e.printStackTrace();
-            System.exit(0);
+            throw new LoadSaveException("Error while Loading: " + e.getMessage());
         }
     }
 
@@ -202,12 +192,14 @@ public class QuestionImport implements DataManagement {
                 con.linkQuestion(new FillBlank(title,answer,time,id,stats,marked));
             }
     } catch (Exception e) {
-        System.err.println( e.getClass().getName() + ": " + e.getMessage() + "2" );
-        e.printStackTrace();
-        System.exit(0);
-    }
+            throw new LoadSaveException("Error while loading: " + e.getMessage());
+        }
     }
 
+    /**
+     * Save the sore to the database
+     * @param score
+     */
 
     @Override
     public void saveScore(int score) {
@@ -219,12 +211,15 @@ public class QuestionImport implements DataManagement {
             pstmt.setString(1,String.valueOf(score));
             pstmt.executeUpdate();
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() + "2" );
-            e.printStackTrace();
-            System.exit(0);
+            throw new LoadSaveException("Error while saving Score: " + e.getMessage());
         }
     }
 
+    /**
+     * to get the latest score from the Database
+     * @return the latest score
+     */
+    @Override
     public int getScore() {
         try {
             Connection c = DBConncetion.getConnection();
@@ -239,11 +234,8 @@ public class QuestionImport implements DataManagement {
             return rs.getInt("score");
 
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() + "2" );
-            e.printStackTrace();
-            System.exit(0);
+            throw new LoadSaveException("Error while loading score " + e.getMessage());
         }
-        return 0;
     }
 }
 
