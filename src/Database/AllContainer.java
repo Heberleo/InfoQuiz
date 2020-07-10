@@ -33,6 +33,7 @@ public class AllContainer implements QuestionContainer {
     public void linkQuestion(Question q) {
         //Exception
         if (list.contains(q)) throw new IllegalQuestionException("Doppelte Frage");
+        if (q.isMarked()) MarkedContainer.instance().linkQuestion(q);
         list.add(q);
     }
 
