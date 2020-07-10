@@ -36,7 +36,6 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	private TimerPanel timer;
 	private CardLayout clOutput;
 	private JPanel pnlOutput;
-	private JPanel pnlEmpty;
 
 	public MultipleChoiceDisplay() {
 		GridBagConstraints gbc;
@@ -48,6 +47,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		lblQuestion.setFocusable(false);
 		lblQuestion.setHorizontalAlignment(JLabel.CENTER);
 		lblQuestion.setBackground(Color.WHITE);
+		lblQuestion.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
 		lblQuestion.setOpaque(true);
 		Font fontQuestion = lblQuestion.getFont();
 		fontQuestion = new Font(fontQuestion.getName(), fontQuestion.getStyle(), 40);
@@ -56,7 +56,6 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 
 		// the bottom Panel will a gridLayout containing two panels
 		JPanel pnlInput = new JPanel();
-		pnlOutput = new JPanel();
 
 			// pnlInput
 			pnlInput.setLayout(new GridBagLayout());
@@ -121,6 +120,8 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 					pnlInput.add(btnSubmit, gbc);
 
 			//pnlOutput
+			pnlOutput = new JPanel();
+			pnlOutput.setVisible(true);
 			clOutput = new CardLayout();
 			pnlOutput.setLayout(clOutput);
 
@@ -136,11 +137,6 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 				//timer
 				timer = new TimerPanel(this);
 				pnlOutput.add(timer, "timer");
-
-				// pnlEmpty
-				pnlEmpty = new JPanel();
-				pnlEmpty.setBackground(Color.WHITE);
-				pnlOutput.add(pnlEmpty, "empty");
 
 		// add to pnlBottom
 		gbc.gridx = 0;
@@ -188,33 +184,6 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 			cb2.setSelected(false);
 			cb3.setSelected(false);
 			cb4.setSelected(false);
-		}
-	}
-
-	/**
-	 * Makes the output label visible/ invisible.
-	 * 
-	 * @param visible true for visible, false for invisible
-	 */
-	private void showOutput(boolean visible) {
-		if (visible) {
-			clOutput.show(pnlOutput, "lblOutput");
-		} else {
-			clOutput.show(pnlOutput, "empty");
-		}
-	}
-
-	/**
-	 * Selects timer in the CardLayout and starts the timer.
-	 * @param visible true makes timer active + visible
-	 */
-	private void showTimer(boolean visible) {
-		if (visible) {
-			timer.start(question.getTime());
-			clOutput.show(pnlOutput, "timer");
-		} else {
-			timer.stop();
-			clOutput.show(pnlOutput, "empty");
 		}
 	}
 
@@ -290,7 +259,6 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		lblQuestion.setText("<html>" + text + "</html>");
 	}
 
-
 	/////////////////////////////////////////////////////////////////////////////////////
 	// ActionListeners and KeyListeners
 	////////////////////////////////////////////////////////////////////////////////////
@@ -305,7 +273,10 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// Methods to manage the question
 	////////////////////////////////////////////////////////////////////////////////////////
-
+	/**
+	 * Displays the question.
+	 * @param q an object of a Question-subclass
+	 */
 	@Override
 	public void readQuestion(Question q) {
 		if (!checkType(q))
@@ -313,8 +284,8 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 		question = (MultipleChoice) q;
 		setQuestion(question.getTitle());
 		setAnswers(question.getAnswers());
-
-		showTimer(true);
+		clOutput.show(pnlOutput, "timer");
+		timer.start(q.getTime());
 		enableInput(true);
 	}
 
@@ -328,7 +299,11 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
     public boolean checkAnswer() {
 		return question.getCorrectAnswers().equals(getSelection());
     }
-
+	/**
+	 * This method should be called, when the submit button was clicked/ enter ky was hit. It will check the answer,
+	 * set the output and update the statistics of the the question and the overall score.
+	 * Afterwards, the input will be disabled.
+	 */
 	@Override
 	public void hitSubmit() {
 		timer.stop();
@@ -342,7 +317,7 @@ public class MultipleChoiceDisplay extends QuestionDisplay implements ActionList
 			question.getStats().increaseWrongAnswered();
 			PointCounter.instance().decreasePoints();
 		}
-		showOutput(true);
+		clOutput.show(pnlOutput, "lblOutput");
 		enableInput(false);
 	}
 }

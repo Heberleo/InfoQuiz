@@ -14,28 +14,33 @@ public class DetailDialog extends AbstractDialog {
 	public DetailDialog(Frame owner, QuestionListModel model, Question q) {
 		super(owner);
 		setTitle("Details");
-		setButton("Edit");
+		setButton("Bearbeiten");
 		enableType(false);
 		showQuestion(q);
 		enableAll(false);
+		JDialog owner1 = this;
 		addButtonListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!isOpen()) {
-					setButton("Confirm");
+					setButton("Bestätigen");
 					enableAll(true);
 				} else {
-					q.setTime(getTime());
-					q.setTitle(getQuestionTitle());
-					if (q.getType().equals(Questiontype.FillBlank)) {
-						((FillBlank) q).setCorrectAnswer(getCorrectAnswer());
-					} else {
-						((MultipleChoice) q).setAnswers(getAnswers());
-						((MultipleChoice) q).setCorrectAnswers(getCorrectAnswer());
+					try {
+						q.setTime(getTime());
+						q.setTitle(getQuestionTitle());
+						if (q.getType().equals(Questiontype.FillBlank)) {
+							((FillBlank) q).setCorrectAnswer(getCorrectAnswer());
+						} else {
+							((MultipleChoice) q).setAnswers(getAnswers());
+							((MultipleChoice) q).setCorrectAnswers(getCorrectAnswer());
+						}
+						model.updateElement(q);
+						setButton("Bearbeiten");
+						enableAll(false);
+					} catch (IllegalArgumentException ee) {
+						JOptionPane.showMessageDialog(owner1, "Fehler: " + ee.getMessage());
 					}
-					model.updateElement(q);
-					setButton("Edit");
-					enableAll(false);
 				}
 			}
 		});

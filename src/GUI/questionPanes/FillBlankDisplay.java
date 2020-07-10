@@ -25,7 +25,6 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     private TimerPanel timer;
     private CardLayout clOutput;
     private JPanel pnlOutput;
-    private JPanel pnlEmpty;
     //
     public FillBlankDisplay() {
         GridBagConstraints gbc;
@@ -37,6 +36,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         lblQuestion.setHorizontalAlignment(JLabel.CENTER);
         lblQuestion.setBackground(Color.WHITE);
         lblQuestion.setOpaque(true);
+        lblQuestion.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
         Font fontQuestion = lblQuestion.getFont();
         fontQuestion = new Font(fontQuestion.getName(), fontQuestion.getStyle(), 40);
         lblQuestion.setFont(fontQuestion);
@@ -44,7 +44,6 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
 
         //the bottom Panel will a gridLayout containing two panels
         JPanel pnlInput = new JPanel();
-        pnlOutput = new JPanel();
 
         //pnlInput
         pnlInput.setLayout(new GridBagLayout());
@@ -81,6 +80,8 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         pnlInput.add(btnSubmit, gbc);
 
         //pnlOutput
+        pnlOutput = new JPanel();
+        pnlOutput.setVisible(true);
         clOutput = new CardLayout();
         pnlOutput.setLayout(clOutput);
         pnlOutput.setBackground(Color.WHITE);
@@ -98,10 +99,6 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         timer = new TimerPanel(this);
         pnlOutput.add(timer, "timer");
 
-        // pnlEmpty
-        pnlEmpty = new JPanel();
-        pnlEmpty.setBackground(Color.WHITE);
-        pnlOutput.add(pnlEmpty, "empty");
 
         //add to pnlBottom
         gbc = new GridBagConstraints();
@@ -156,33 +153,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     }
 
     /**
-     * Makes the output label visible/ invisible.
-     * @param visible true for visible, false for invisible
-     */
-    private void showOutput(boolean visible) {
-        if (visible) {
-            clOutput.show(pnlOutput, "lblOutput");
-        } else {
-            clOutput.show(pnlOutput, "empty");
-        }
-    }
-
-    /**
-     * Selects timer in the CardLayout and starts the timer.
-     * @param visible true makes timer active + visible
-     */
-    private void showTimer(boolean visible) {
-        if (visible) {
-            timer.start(question.getTime());
-            clOutput.show(pnlOutput, "timer");
-        } else {
-            timer.stop();
-            clOutput.show(pnlOutput, "empty");
-        }
-    }
-
-    /**
-     * Sets the output label to "RICHITG"/ GREEN or "FALSCH"/ RED
+     * Sets the output label to "RICHITG"/ GREEN or "corrextAnswers"/ RED and
      * @param correct true for correct, false for incorrect
      */
     private void setOutput(boolean correct) {
@@ -196,8 +167,8 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     }
 
     /**
-     * Sets the question text.
-     * @param text the question as String
+     * Sets the question title.
+     * @param text the title of the question
      */
     private void setQuestion(String text) { lblQuestion.setText("<html>" + text + "</html>");
     }
@@ -234,16 +205,26 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
     // Methods to manage the question
     ////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Displays the question.
+     * @param q an object of a Question-subclass
+     */
     @Override
     public void readQuestion(Question q) {
         if (!checkType(q)) throw new IllegalQuestionException("FillBlank");
         question = (FillBlank) q;
         setQuestion(question.getTitle());
-
-        showTimer(true);
+        clOutput.show(pnlOutput, "timer");
+        timer.start(q.getTime());
         enableInput(true);
         txtInput.grabFocus();
     }
+
+    /**
+     * Checks, if the argument is of the type FillBlank.
+     * @param q the question to be checked.
+     * @return true if yes, false if no
+     */
     @Override
     public boolean checkType(Question q) {
         return q.getType().equals(Questiontype.FillBlank);
@@ -253,6 +234,11 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
         return question.getCorrectAnswer().equals(getInput());
     }
 
+    /**
+     * This method should be called, when the submit button was clicked/ enter ky was hit. It will check the answer,
+     * set the output and update the statistics of the the question and the overall score.
+     * Afterwards, the input will be disabled.
+     */
     @Override
     public void hitSubmit() {
         timer.stop();
@@ -265,7 +251,7 @@ public class FillBlankDisplay extends QuestionDisplay implements ActionListener,
             question.getStats().increaseWrongAnswered();
             PointCounter.instance().decreasePoints();
         }
-        showOutput(true);
+        clOutput.show(pnlOutput, "lblOutput");
         enableInput(false);
     }
 }

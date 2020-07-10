@@ -8,8 +8,6 @@ import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class EingabeWindow extends JFrame {
 	JList<Question> jList;
@@ -19,7 +17,7 @@ public class EingabeWindow extends JFrame {
 		super();
 		UIManager.put("List.selectionBackground", MyColor.uni);
 		UIManager.put("List.selectionForeground", Color.WHITE);
-		UIManager.put("List.focusCellHighlightBorder", Color.WHITE);
+		UIManager.put("List.focusCellHighlightBorder", false);
 		UIManager.put("Button.background", MyColor.uni);
 		UIManager.put("Button.foreground", Color.WHITE);
 		UIManager.put("ScrollPane.border", null);
@@ -47,7 +45,7 @@ public class EingabeWindow extends JFrame {
 			@Override
 			public void contentsChanged(ListDataEvent e) { jList.updateUI(); }
 		});
-		jList = new JList<Question>(model);
+		jList = new JList<>(model);
 		JScrollPane scrollPane = new JScrollPane(jList);
 		add(scrollPane, BorderLayout.CENTER);
 
@@ -55,47 +53,65 @@ public class EingabeWindow extends JFrame {
 		JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pnlButton.setBackground(Color.WHITE);
 
-		MyButton btnDelete = new MyButton("Delete");
-		btnDelete.setPreferredSize(new Dimension(80, 30));
+		MyButton btnDelete = new MyButton("Löschen");
+		btnDelete.setPreferredSize(new Dimension(110, 30));
 		btnDelete.setFocusable(false);
-		btnDelete.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (jList.isSelectionEmpty());
-				else if (JOptionPane.showConfirmDialog(owner, "Do you want to delete this question?", "Confirm deletion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
-					model.remove(jList.getSelectedIndex());
-				}
+		btnDelete.addActionListener(e -> {
+			if (jList.isSelectionEmpty()) return;
+			else if (JOptionPane.showConfirmDialog(owner, "Diese Frage löschen?", "Bestätigen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
+				model.remove(jList.getSelectedIndex());
 			}
 		});
 		pnlButton.add(btnDelete);
 
-		MyButton btnAdd = new MyButton("Add");
-		btnAdd.setPreferredSize(new Dimension(80, 30));
+		MyButton btnAdd = new MyButton("Hinzufügen");
+		btnAdd.setPreferredSize(new Dimension(110, 30));
 		btnAdd.setFocusable(false);
-		btnAdd.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				AddDialog addDialog = new AddDialog(owner, model);
-			}
-		});
+		btnAdd.addActionListener(e -> new AddDialog(owner, model));
 		pnlButton.add(btnAdd);
 
 		MyButton btnDetails = new MyButton("Details");
-		btnDetails.setPreferredSize(new Dimension(80, 30));
+		btnDetails.setPreferredSize(new Dimension(110, 30));
 		btnDetails.setFocusable(false);
-		btnDetails.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				 if (!jList.isSelectionEmpty()) {
-				 	Question q = (Question) model.getQuestionAt(jList.getSelectedIndex());
-				 	DetailDialog detailDialog = new DetailDialog(owner, model, q);
-				 }
-			}
+		btnDetails.addActionListener(e -> {
+			 if (!jList.isSelectionEmpty()) {
+				 Question q = model.getElementAt(jList.getSelectedIndex());
+				 DetailDialog detailDialog = new DetailDialog(owner, model, q);
+			 }
 		});
 		pnlButton.add(btnDetails);
 
 		add(pnlButton, BorderLayout.SOUTH);
 		//
+
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(MyColor.uni);
+		menuBar.setVisible(true);
+		menuBar.setFocusable(false);
+		add(menuBar, BorderLayout.NORTH);
+
+		JMenu resetMenu = new JMenu("Zurücksetzen");
+		resetMenu.setBackground(MyColor.uni);
+		resetMenu.setForeground(Color.WHITE);
+		resetMenu.setFocusPainted(false);
+		resetMenu.setFocusable(false);
+		menuBar.add(resetMenu);
+
+		JMenuItem resetStats = new JMenuItem("Statistik");
+		resetStats.setBackground(MyColor.uni);
+		resetStats.setForeground(Color.WHITE);
+		resetStats.setFocusPainted(false);
+		resetStats.setFocusable(false);
+		resetStats.addActionListener(e -> model.resetStats());
+		resetMenu.add(resetStats);
+
+		JMenuItem resetScore = new JMenuItem("Score");
+		resetScore.setBackground(MyColor.uni);
+		resetScore.setForeground(Color.WHITE);
+		resetScore.setFocusPainted(false);
+		resetScore.setFocusable(false);
+		resetScore.addActionListener(e -> model.resetScore());
+		resetMenu.add(resetScore);
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);

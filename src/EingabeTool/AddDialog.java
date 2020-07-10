@@ -19,6 +19,9 @@ public class AddDialog extends AbstractDialog {
 		addButtonListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(getTime() == 30) {
+					if (!(JOptionPane.showConfirmDialog(owner1, "Bestätige Zeit: 30s", "", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)) return;
+				}
 					try {
 						Question q;
 						if(getQuestionType().equals(Questiontype.FillBlank)) {
@@ -29,7 +32,7 @@ public class AddDialog extends AbstractDialog {
 						model.newElement(q);
 						dispose();
 					} catch (Exception ee) {
-						JOptionPane.showMessageDialog(owner1, "Please check your input.");
+						JOptionPane.showMessageDialog(owner1, "Fehler: " + ee.getMessage());
 					}
 			}
 		});
