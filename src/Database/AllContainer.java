@@ -1,12 +1,10 @@
 package Database;
 
-import GUI.questionPanes.IllegalQuestionException;
-import Management.MultipleChoice;
-import Management.Question;
-import jdk.jfr.DataAmount;
-
 import java.util.ArrayList;
 import java.util.Random;
+
+import GUI.questionPanes.IllegalQuestionException;
+import Management.Question;
 
 public class AllContainer implements QuestionContainer {
     private static AllContainer container = null;

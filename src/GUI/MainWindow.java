@@ -6,7 +6,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -15,7 +14,13 @@ import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 import GUI.questionPanes.QuestionPanel;
 import GUI.resources.MyButton;
@@ -34,7 +39,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JMenuItem allQuestions;
 	private JMenuItem myList;
 	private JMenuItem stats; // to go to Stats
-	private JMenuItem dailyChallenge; // to Access dailyChallenges
 	private JMenuItem pointsItem; // point counter
 	private StatsWindow statsWindow; // JDialog showing statistics
 	private WindowListener windowListener;
@@ -45,6 +49,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		super("InfoQuiz");
 		ImageIcon icon = new ImageIcon("lib/images/icon32.png");
 		setIconImage(icon.getImage());
+
 		// QuestionPanel
 		mainQuestionPanel = new QuestionPanel();
 		mainQuestionPanel.setBackground(Color.RED); // Just a Test
@@ -106,7 +111,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		menuBar.add(Box.createHorizontalGlue());
 		menuBar.add(stats);
 		menuBar.add(pointsItem);
-
 
 		setJMenuBar(menuBar);
 
