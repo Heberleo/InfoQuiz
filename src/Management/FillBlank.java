@@ -19,7 +19,7 @@ public class FillBlank extends Question {
 	}
 	
 	public void setCorrectAnswer(String correctAnswer) throws IllegalArgumentException {
-		if (!checkCorrectAnswer(correctAnswer)) throw new IllegalArgumentException("Correctanswer must not be null.");
+		if (!checkCorrectAnswer(correctAnswer)) throw new IllegalArgumentException("Antwort darf nicht leer sein.");
 		this.correctAnswer = correctAnswer;
 	}
 

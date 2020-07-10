@@ -4,10 +4,8 @@ package Management;
 import Database.DBConncetion;
 import Database.AllContainer;
 import Database.MarkedContainer;
-import Database.QuestionImport;
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 
 /**
@@ -17,7 +15,6 @@ import java.beans.PropertyChangeSupport;
  */
 public class MainManagement {
     private static CurrentQuestion currentQuestion;
-    private static QuestionImport questionImport;
     private static QuestionList questionList = QuestionList.ALL;
 
     /**
@@ -37,7 +34,7 @@ public class MainManagement {
     }
 
     /**
-     * This Method will close the Database-connection and shut down the programm.
+     * This Method will close the Database-connection and shut down the program.
      */
     public static void close() {
         DBConncetion.connect();
@@ -86,9 +83,6 @@ public class MainManagement {
         questionList  = list;
     }
 
-    public static QuestionList getQuestionList() {
-        return questionList;
-    }
 
     public static void addQuestionListener(PropertyChangeListener l) {
         currentQuestion.addPropertyChangeListener(l);

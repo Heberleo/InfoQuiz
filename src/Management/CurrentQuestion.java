@@ -12,12 +12,14 @@ public class CurrentQuestion {
     }
 
     /**
-     * Fires a PropertyChangeEvent that there is a new question.
+     * Fires a PropertyChangeEvent that there is a new question. If the new question equals the old question, the PropertyChangeEvent
+     * will still be fired with the oldValue attribute set to null.
      * @param q may be null
      */
     public void setQuestion(Question q) {
-       propertyChangeSupport.firePropertyChange("question", this.q, q);
-       this.q = q;
+        if (q.equals(this.q)) propertyChangeSupport.firePropertyChange("question", null, q);
+        propertyChangeSupport.firePropertyChange("question", this.q, q);
+        this.q = q;
     }
 
     public Question getQuestion() {

@@ -1,7 +1,6 @@
 package Database;
 
 import GUI.questionPanes.IllegalQuestionException;
-import Management.MultipleChoice;
 import Management.Question;
 
 import java.util.ArrayList;

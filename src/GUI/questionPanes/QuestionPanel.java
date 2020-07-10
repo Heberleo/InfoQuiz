@@ -45,7 +45,7 @@ public class QuestionPanel extends JPanel implements PropertyChangeListener {
     }
 
     /**
-     * Activates the questionDisplay, that matches the questionType.
+     * Activates the questionDisplay, that matches the questionType of the new value of the currentQuestion in Management.MainManagement.
      * If the new question is empty, the errorPanel will be shown and nothing else happens.
      * @param evt fired, when the currentQuestion in MainManagement is changed.
      */
