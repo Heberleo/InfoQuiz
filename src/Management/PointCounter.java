@@ -43,7 +43,7 @@ public class PointCounter {
 		return points;
 	}
 
-	private void setPoints(int points) {
+	public void setPoints(int points) {
 		if (points >= 0) {
 			int old = this.points;
 			this.points = points;
