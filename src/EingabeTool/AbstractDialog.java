@@ -10,20 +10,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AbstractDialog extends JDialog {
-	private final JTextField txtCorrectMC;
+public abstract class AbstractDialog extends JDialog {
 	private JComboBox<Questiontype> cbType;
 	private JPanel pnlCenter;
 	private JPanel pnlButton;
 	private MyButton btnFlex;
-	private JPanel pnlMP;
-	private JPanel pnlFB;
 	private JTextField txtTitleFB;
 	private JTextField txtTitleMP;
 	private JComboBox<Integer> cbTimeFB;
 	private JComboBox<Integer> cbTimeMC;
 	private JTextField txtCorrectFB;
 	private JTextField[] txtAnswersMC;
+	private JCheckBox[] cbxCorrectMC;
 
 	private boolean editState;
 
@@ -41,10 +39,10 @@ public class AbstractDialog extends JDialog {
 		//pnlCenter
 		CardLayout cardLayout = new CardLayout();
 		pnlCenter = new JPanel(cardLayout);
-		pnlFB = new JPanel(new GridBagLayout());
+		JPanel pnlFB = new JPanel(new GridBagLayout());
 			pnlFB.setBackground(Color.WHITE);
 			txtTitleFB = new JTextField();
-			txtTitleFB.setBorder(BorderFactory.createTitledBorder(myBorder, "Title"));
+			txtTitleFB.setBorder(BorderFactory.createTitledBorder(myBorder, "Titel"));
 			gbc = new GridBagConstraints();
 			gbc.gridx = 0;
 			gbc.gridy = 0;
@@ -58,10 +56,10 @@ public class AbstractDialog extends JDialog {
 			cbTimeFB.setBackground(Color.WHITE);
 			cbTimeFB.setFont(new Font(cbTimeFB.getFont().getName(), Font.PLAIN, cbTimeFB.getFont().getSize()));
 			cbTimeFB.setFocusable(false);
-			for (int j = 1; j < 181; ++j) {
+			for (int j = 30; j < 300; j += 30) {
 				cbTimeFB.addItem(j);
 			}
-			cbTimeFB.setBorder(BorderFactory.createTitledBorder(myBorder, "Time"));
+			cbTimeFB.setBorder(BorderFactory.createTitledBorder(myBorder, "Zeit"));
 			gbc = new GridBagConstraints();
 			gbc.gridx = 0;
 			gbc.gridy = 1;
@@ -72,7 +70,7 @@ public class AbstractDialog extends JDialog {
 			pnlFB.add(cbTimeFB, gbc);
 
 			txtCorrectFB = new JTextField();
-			txtCorrectFB.setBorder(BorderFactory.createTitledBorder(myBorder, "Correct answer"));
+			txtCorrectFB.setBorder(BorderFactory.createTitledBorder(myBorder, "Richtige Antwort"));
 			gbc = new GridBagConstraints();
 			gbc.gridx = 0;
 			gbc.gridy = 2;
@@ -85,16 +83,17 @@ public class AbstractDialog extends JDialog {
 		pnlCenter.add(pnlFB, Questiontype.FillBlank.toString());
 
 
-		pnlMP = new JPanel();
+		JPanel pnlMP = new JPanel();
 			pnlMP.setLayout(new GridBagLayout());
 			pnlMP.setBackground(Color.WHITE);
 
 			txtTitleMP = new JTextField();
 			txtTitleMP.setBackground(Color.WHITE);
-			txtTitleMP.setBorder(BorderFactory.createTitledBorder(myBorder, "Title"));
+			txtTitleMP.setBorder(BorderFactory.createTitledBorder(myBorder, "Titel"));
 			gbc = new GridBagConstraints();
 			gbc.gridx = 0;
 			gbc.gridy = 0;
+			gbc.gridwidth = 4;
 			gbc.weightx = 1.0;
 			gbc.weighty = 0.0;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -105,13 +104,14 @@ public class AbstractDialog extends JDialog {
 			cbTimeMC.setBackground(Color.WHITE);
 			cbTimeMC.setFont(new Font(cbTimeMC.getFont().getName(), Font.PLAIN, cbTimeMC.getFont().getSize()));
 			cbTimeMC.setFocusable(false);
-			for (int j = 1; j < 181; ++j) {
+			for (int j = 30; j < 300; j+= 30) {
 				cbTimeMC.addItem(j);
 			}
-			cbTimeMC.setBorder(BorderFactory.createTitledBorder(myBorder, "Time"));
+			cbTimeMC.setBorder(BorderFactory.createTitledBorder(myBorder, "Zeit"));
 			gbc = new GridBagConstraints();
 			gbc.gridx = 0;
 			gbc.gridy = 1;
+			gbc.gridwidth = 4;
 			gbc.weightx = 1.0;
 			gbc.weighty = 0.0;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -121,10 +121,11 @@ public class AbstractDialog extends JDialog {
 			txtAnswersMC = new JTextField[4];
 
 			txtAnswersMC[0] = new JTextField();
-			txtAnswersMC[0].setBorder(BorderFactory.createTitledBorder(myBorder, "Answer 1"));
+			txtAnswersMC[0].setBorder(BorderFactory.createTitledBorder(myBorder, "Antwort 1"));
 			gbc = new GridBagConstraints();
 			gbc.gridx = 0;
 			gbc.gridy = 2;
+			gbc.gridwidth = 4;
 			gbc.weightx = 1.0;
 			gbc.weighty = 0.0;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -132,10 +133,11 @@ public class AbstractDialog extends JDialog {
 			pnlMP.add(txtAnswersMC[0], gbc);
 
 			txtAnswersMC[1] = new JTextField();
-			txtAnswersMC[1].setBorder(BorderFactory.createTitledBorder(myBorder, "Answer 2"));
+			txtAnswersMC[1].setBorder(BorderFactory.createTitledBorder(myBorder, "Antwort 2"));
 			gbc = new GridBagConstraints();
 			gbc.gridx = 0;
 			gbc.gridy = 3;
+			gbc.gridwidth = 4;
 			gbc.weightx = 1.0;
 			gbc.weighty = 0.0;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -143,10 +145,11 @@ public class AbstractDialog extends JDialog {
 			pnlMP.add(txtAnswersMC[1], gbc);
 
 			txtAnswersMC[2] = new JTextField();
-			txtAnswersMC[2].setBorder(BorderFactory.createTitledBorder(myBorder, "Answer 3"));
+			txtAnswersMC[2].setBorder(BorderFactory.createTitledBorder(myBorder, "Antwort 3"));
 			gbc = new GridBagConstraints();
 			gbc.gridx = 0;
 			gbc.gridy = 4;
+			gbc.gridwidth = 4;
 			gbc.weightx = 1.0;
 			gbc.weighty = 0.0;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -154,42 +157,47 @@ public class AbstractDialog extends JDialog {
 			pnlMP.add(txtAnswersMC[2], gbc);
 
 			txtAnswersMC[3] = new JTextField();
-			txtAnswersMC[3].setBorder(BorderFactory.createTitledBorder(myBorder, "Answer 4"));
+			txtAnswersMC[3].setBorder(BorderFactory.createTitledBorder(myBorder, "Antwort 4"));
 			gbc = new GridBagConstraints();
 			gbc.gridx = 0;
 			gbc.gridy = 5;
+			gbc.gridwidth = 4;
 			gbc.weightx = 1.0;
 			gbc.weighty = 0.0;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 			pnlMP.add(txtAnswersMC[3], gbc);
 
-			txtCorrectMC = new JTextField();
-			txtCorrectMC.setBorder(BorderFactory.createTitledBorder(myBorder, "Correct answer"));
-			gbc = new GridBagConstraints();
-			gbc.gridx = 0;
-			gbc.gridy = 6;
-			gbc.weightx = 1.0;
-			gbc.weighty = 1.0;
-			gbc.fill = GridBagConstraints.HORIZONTAL;
-			gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-			pnlMP.add(txtCorrectMC, gbc);
+			cbxCorrectMC = new JCheckBox[4];
+			for(int i = 0; i < 4; i++) {
+				cbxCorrectMC[i] = new JCheckBox("Antwort " + (i + 1));
+				cbxCorrectMC[i].setBorder(BorderFactory.createTitledBorder(myBorder, "Antwort " + (i + 1)));
+				cbxCorrectMC[i].setBackground(Color.WHITE);
+				cbxCorrectMC[i].setFocusable(false);
+				gbc = new GridBagConstraints();
+				gbc.gridx = i;
+				gbc.gridy = 6;
+				gbc.weightx = 1.0;
+				gbc.weighty = 1.0;
+				gbc.fill = GridBagConstraints.HORIZONTAL;
+				gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+				pnlMP.add(cbxCorrectMC[i], gbc);
+			}
 
 		pnlCenter.add(pnlMP, Questiontype.MultipleChoice.toString());
 		add(pnlCenter, BorderLayout.CENTER);
 
 		// ComboBox cbType
 		cbType = new JComboBox<>(Questiontype.values());
-		cbType.setBorder(BorderFactory.createTitledBorder(myBorder, "Type"));
+		cbType.setBorder(BorderFactory.createTitledBorder(myBorder, "Typ"));
 		cbType.setBackground(Color.WHITE);
 		cbType.setFont(new Font(cbType.getFont().getName(), Font.PLAIN,cbType.getFont().getSize()));
 		cbType.setFocusable(false);
-		cbType.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Questiontype type = (Questiontype) ((JComboBox<Questiontype>) e.getSource()).getSelectedItem();
-				cardLayout.show(pnlCenter, type.toString());
-			}
+		cbType.addActionListener(e -> {
+			Questiontype type = (Questiontype) ((JComboBox<Questiontype>) e.getSource()).getSelectedItem();
+			cardLayout.show(pnlCenter, type.toString());
+			if (type.toString().equals(Questiontype.FillBlank.toString())) txtTitleFB.grabFocus();
+			else txtTitleMP.grabFocus();
 		});
 		add(cbType, BorderLayout.NORTH);
 
@@ -198,7 +206,7 @@ public class AbstractDialog extends JDialog {
 		pnlButton.setBackground(Color.WHITE);
 		add(pnlButton,BorderLayout.SOUTH);
 
-		btnFlex = new MyButton("Submit");
+		btnFlex = new MyButton("");
 		btnFlex.setPreferredSize(new Dimension(120, 30));
 		btnFlex.setFocusable(false);
 		pnlButton.add(btnFlex);
@@ -217,9 +225,9 @@ public class AbstractDialog extends JDialog {
 		cbTimeMC.setEnabled(aFlag);
 		cbTimeFB.setEnabled(aFlag);
 		txtCorrectFB.setEnabled(aFlag);
-		txtCorrectMC.setEnabled(aFlag);
 		for (int i = 0; i < 4; ++i) {
 			txtAnswersMC[i].setEnabled(aFlag);
+			cbxCorrectMC[i].setEnabled(aFlag);
 		}
 	}
 
@@ -275,19 +283,26 @@ public class AbstractDialog extends JDialog {
 			return;
 		}
 		cbTimeMC.setSelectedItem(time);
+
 	}
 
 	public int getTime() {
 		if (cbType.getSelectedItem().toString().equals(Questiontype.FillBlank.toString())) {
-			return cbTimeFB.getSelectedIndex() + 1;
+			return (cbTimeFB.getSelectedIndex() + 1) * 30;
 		}
-		return cbTimeMC.getSelectedIndex() + 1;
+		return (cbTimeMC.getSelectedIndex() + 1) * 30;
 	}
 	private void setAnswersMC(String[] answers, String correct) {
 		for (int i = 0; i < 4; i++) {
 			txtAnswersMC[i].setText(answers[i]);
 		}
-		txtCorrectMC.setText(correct);
+		StringBuilder sb = new StringBuilder(correct);
+		while (!(sb.length() == 0)) {
+			char c = sb.charAt(0);
+			sb = sb.deleteCharAt(0);
+			int i = Integer.parseInt(c + "");
+			cbxCorrectMC[i - 1].setSelected(true);
+		}
 	}
 
 	private void setAnswersFB(String answer) {
@@ -306,7 +321,11 @@ public class AbstractDialog extends JDialog {
 		if (cbType.getSelectedItem().toString().equals(Questiontype.FillBlank.toString())) {
 			return txtCorrectFB.getText();
 		}
-		return txtCorrectMC.getText();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < 4; i++) {
+			if(cbxCorrectMC[i].isSelected()) sb.append(i + 1);
+		}
+		return sb.toString();
 	}
 
 	public Questiontype getQuestionType() {

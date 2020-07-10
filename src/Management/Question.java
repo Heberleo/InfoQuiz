@@ -27,7 +27,7 @@ public abstract class Question {
 	}
 
 	public void setTitle(String title) throws IllegalArgumentException {
-		if (!checkTitle(title)) throw new IllegalArgumentException("title must not be null.");
+		if (!checkTitle(title)) throw new IllegalArgumentException("Titel darf nicht leer sein.");
 		this.title = title;
 	}
 
@@ -74,7 +74,11 @@ public abstract class Question {
 		return marked;
 	}
 
-	private void setMarked(boolean marked) {
+	public void setMarked(boolean marked) {
 		this.marked = marked;
+	}
+
+	public String toString() {
+		return "(" + type.toString() + ")" + title;
 	}
 }

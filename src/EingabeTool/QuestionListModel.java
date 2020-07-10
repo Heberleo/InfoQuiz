@@ -1,33 +1,42 @@
 package EingabeTool;
 
 import Database.AllContainer;
-import Database.DBConncetion;
 import Database.DataManagement;
 import Database.QuestionImport;
+import Management.PointCounter;
 import Management.Question;
+import Management.Stats;
 
 import javax.swing.*;
 
-public class QuestionListModel extends DefaultListModel{
+
+public class QuestionListModel extends DefaultListModel<Question>{
 	private DataManagement dataManagement = new QuestionImport();
 
+	/**
+	 * @param index of the Element
+	 * @return a String representation of the Question at the given index in format: ("type")"title"
+	 */
 	@Override
-	public Object getElementAt(int index) {
-		Question q = (Question) super.getElementAt(index);
-		return ("(" + q.getType().toString() + ") " + q.getTitle());
+	public Question getElementAt(int index) {
+		return super.getElementAt(index);
 	}
 
-	public Question getQuestionAt(int index) {
-		Question q = (Question) super.getElementAt(index);
-		return q;
-	}
 
+	/**
+	 * Sends the edited question to the database to be saved.
+	 * @param q the question that should be saved.
+	 */
 	public void updateElement(Question q) {
 		// Update in der Datenbank
 		dataManagement.edit(q);
 		fireContentsChanged(this, q.getId(), q.getId());
 	}
 
+	/**
+	 * Adds a new question to the model and saves ist automatically in the database.
+	 * @param q new question
+	 */
 	public void newElement(Question q) {
 		addElement(q);
 		AllContainer.instance().linkQuestion(q);
@@ -36,19 +45,24 @@ public class QuestionListModel extends DefaultListModel{
 	}
 
 	@Override
-	public void addElement(Object element) {
+	public void addElement(Question element) {
 		if(!this.contains(element))
 		{
 			int i=0;
-			while(i<this.size()&&((Question)this.get(i)).getId() <= ((Question)element).getId()){
+			while(i<this.size()&&(this.get(i)).getId() <= (element).getId()){
 					i++;
 				}
-				this.add(i, (Question) element);
+				this.add(i, element);
 		}
 	}
 
+	/**
+	 * Removes a question from the model and automatically deletes it from the database.
+	 * @param index Index of the question to be removed.
+	 * @return the question wich was removed.
+	 */
 	@Override
-	public Object remove(int index) {
+	public Question remove(int index) {
 		Question q = (Question) super.getElementAt(index);
 		AllContainer.instance().unlinkQuestion(q);
 		dataManagement.delete(q);
@@ -57,9 +71,10 @@ public class QuestionListModel extends DefaultListModel{
 		return q;
 	}
 
+	/**
+	 * Initializes the QuestionListModel. Imports all questions from the database.
+	 */
 	public void init() {
-		QuestionImport questionImport;
-		questionImport = new QuestionImport();
 		// Datenbank connect
 		AllContainer.instance().load();
 
@@ -67,5 +82,26 @@ public class QuestionListModel extends DefaultListModel{
 		for(Question q: AllContainer.instance().getList()) {
 			addElement(q);
 		}
+	}
+
+	/**
+	 * Iterates over all Question and sets the stats to 0, 0 and the marked-status to false. Automatically saves changes
+	 * to the database.
+	 */
+	public void resetStats() {
+		for (Question q : AllContainer.instance().getList()) {
+			q.setStats(new Stats(0,0));
+			q.setMarked(false);
+		}
+		dataManagement.save(AllContainer.instance());
+	}
+
+	/**
+	 * Sets the score to 0 and saves it.
+	 */
+	public void resetScore() {
+		PointCounter.instance().load();
+		PointCounter.instance().setPoints(0);
+		PointCounter.instance().savePoints();
 	}
 }
