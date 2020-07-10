@@ -1,10 +1,9 @@
 package Database;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import GUI.questionPanes.IllegalQuestionException;
 import Management.Question;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class AllContainer implements QuestionContainer {
     private static AllContainer container = null;
