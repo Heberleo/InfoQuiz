@@ -1,5 +1,6 @@
 package EingabeTool;
 
+import Database.LoadSaveException;
 import GUI.resources.MyButton;
 import GUI.resources.MyColor;
 import Management.Question;
@@ -13,7 +14,7 @@ public class EingabeWindow extends JFrame {
 	JList<Question> jList;
 	QuestionListModel model;
 
-	public EingabeWindow() {
+	public EingabeWindow() throws LoadSaveException {
 		super();
 		UIManager.put("List.selectionBackground", MyColor.uni);
 		UIManager.put("List.selectionForeground", Color.WHITE);
@@ -102,7 +103,13 @@ public class EingabeWindow extends JFrame {
 		resetStats.setForeground(Color.WHITE);
 		resetStats.setFocusPainted(false);
 		resetStats.setFocusable(false);
-		resetStats.addActionListener(e -> model.resetStats());
+		resetStats.addActionListener(e -> {
+			try {
+				model.resetStats();
+			} catch (LoadSaveException loadSaveException) {
+				loadSaveException.printStackTrace();
+			}
+		});
 		resetMenu.add(resetStats);
 
 		JMenuItem resetScore = new JMenuItem("Score");
@@ -110,7 +117,13 @@ public class EingabeWindow extends JFrame {
 		resetScore.setForeground(Color.WHITE);
 		resetScore.setFocusPainted(false);
 		resetScore.setFocusable(false);
-		resetScore.addActionListener(e -> model.resetScore());
+		resetScore.addActionListener(e -> {
+			try {
+				model.resetScore();
+			} catch (LoadSaveException loadSaveException) {
+				loadSaveException.printStackTrace();
+			}
+		});
 		resetMenu.add(resetScore);
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);

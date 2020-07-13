@@ -18,7 +18,7 @@ public class QuestionImport implements DataManagement {
      * @param con the Allcontainer
      */
     @Override
-    public void load(AllContainer con) {
+    public void load(AllContainer con) throws LoadSaveException {
         addMultipleChoice(con);
         addFillBlank(con);
     }
@@ -28,7 +28,7 @@ public class QuestionImport implements DataManagement {
      * @param con the Allcontainer
      */
     @Override
-    public void save(AllContainer con) {
+    public void save(AllContainer con) throws LoadSaveException {
         try {
             c = DBConncetion.getConnection();
             String sql = "Update mainquestion \n" +
@@ -38,7 +38,6 @@ public class QuestionImport implements DataManagement {
             for (Question q : con.getList()) {
                 int marked = q.isMarked() ? 1 : 0;
                 Stats stats = q.getStats();
-                System.out.println(stats.getCorrectAnswered());
                 pstmt.setString(1,String.valueOf(stats.getCorrectAnswered()));
                 pstmt.setString(2,String.valueOf(stats.getWrongAnswered()));
                 pstmt.setString(3,String.valueOf(marked));
@@ -56,7 +55,7 @@ public class QuestionImport implements DataManagement {
      * @param q
      */
     @Override
-    public void delete(Question q) {
+    public void delete(Question q) throws LoadSaveException {
         try {
             c = DBConncetion.getConnection();
             String sql = "Delete From mainquestion where id = ?";
@@ -82,11 +81,10 @@ public class QuestionImport implements DataManagement {
      * @param q
      */
     @Override
-    public void add(Question q) {
+    public void add(Question q) throws LoadSaveException {
         try {
             c = DBConncetion.getConnection();
             int type = q.getType() == MultipleChoice ? 1 : 2; // 1 = MC , 2 = FB
-            System.out.println(type);
             String sql = "Insert into mainquestion \n" +
                     "Values (?,?,?,?,0,0,0)";
             PreparedStatement pstmt = c.prepareStatement(sql);
@@ -126,13 +124,13 @@ public class QuestionImport implements DataManagement {
      * @param q
      */
     @Override
-    public void edit(Question q) {
+    public void edit(Question q) throws LoadSaveException {
         delete(q);
         add(q);
     }
 
 
-    private void addMultipleChoice(AllContainer con) {
+    private void addMultipleChoice(AllContainer con) throws LoadSaveException {
         try {
             c = DBConncetion.getConnection();
             int id;
@@ -153,7 +151,6 @@ public class QuestionImport implements DataManagement {
                 title = rs.getString("title");
                 time = rs.getInt("time");
                 marked = rs.getInt("marked") == 1; // 1 in true in Database
-                System.out.println(marked);
                 type = MultipleChoice;
                 stats = new Stats(rs.getInt("answered_correct"),rs.getInt("answered_incorrect"));
                 for (int i = 0; i < 4; ++i) answers[i] = rs.getString(9 + i);
@@ -165,7 +162,7 @@ public class QuestionImport implements DataManagement {
         }
     }
 
-    private void addFillBlank(AllContainer con) {
+    private void addFillBlank(AllContainer con) throws LoadSaveException {
         try {
             c = DBConncetion.getConnection();
             int id;
@@ -186,7 +183,6 @@ public class QuestionImport implements DataManagement {
                 time = rs.getInt("time");
                 type = FillBlank;
                 marked = rs.getInt("marked") == 1;
-                System.out.println(marked);
                 stats = new Stats(rs.getInt("answered_correct"),rs.getInt("answered_incorrect"));
                 answer = rs.getString("answer");
                 con.linkQuestion(new FillBlank(title,answer,time,id,stats,marked));
@@ -202,7 +198,7 @@ public class QuestionImport implements DataManagement {
      */
 
     @Override
-    public void saveScore(int score) {
+    public void saveScore(int score) throws LoadSaveException {
         try {
             Connection c = DBConncetion.getConnection();
             String sql = "INSERT INTO Score\n" +
@@ -220,7 +216,7 @@ public class QuestionImport implements DataManagement {
      * @return the latest score
      */
     @Override
-    public int getScore() {
+    public int getScore()  throws LoadSaveException{
         try {
             Connection c = DBConncetion.getConnection();
             String sql = "Select *\n" +

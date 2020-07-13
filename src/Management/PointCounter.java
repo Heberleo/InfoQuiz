@@ -4,6 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import Database.DataManagement;
+import Database.LoadSaveException;
 import Database.QuestionImport;
 
 public class PointCounter {
@@ -31,7 +32,7 @@ public class PointCounter {
 	/**
 	 * loads the score from database
 	 */
-	public void load() {
+	public void load() throws LoadSaveException {
 		dataManagement = new QuestionImport();
 		setPoints(dataManagement.getScore());
 	}
@@ -43,7 +44,7 @@ public class PointCounter {
 		return points;
 	}
 
-	private void setPoints(int points) {
+	public void setPoints(int points) {
 		if (points >= 0) {
 			int old = this.points;
 			this.points = points;
@@ -78,7 +79,7 @@ public class PointCounter {
 	/**
 	 * saves the current score in the database
 	 */
-	public void savePoints() {
+	public void savePoints() throws LoadSaveException {
 		dataManagement.saveScore(this.points);
 	}
 }

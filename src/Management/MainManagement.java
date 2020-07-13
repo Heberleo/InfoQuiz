@@ -5,6 +5,7 @@ import Database.DBConncetion;
 import Database.AllContainer;
 import Database.MarkedContainer;
 
+import javax.swing.*;
 import java.beans.PropertyChangeListener;
 
 
@@ -22,13 +23,18 @@ public class MainManagement {
      * beginning, even before the MainWindow constructor.
      */
     public static void init() {
+
         currentQuestion = new CurrentQuestion();
         // Datenbank connect
-        DBConncetion.connect();
-        AllContainer.instance().load();
-        PointCounter.instance().load();
-        DBConncetion.closeConnection();
-
+        try {
+            DBConncetion.connect();
+            AllContainer.instance().load();
+            PointCounter.instance().load();
+            DBConncetion.closeConnection();
+        } catch (Exception e) {
+            int i = JOptionPane.showOptionDialog(null,e.getMessage(),"Fehler",JOptionPane.OK_CANCEL_OPTION,JOptionPane.ERROR_MESSAGE,null,null,null);
+            System.exit(1);
+        }
         // set the QuestionList to start with
         questionList = QuestionList.ALL;
     }
@@ -37,10 +43,15 @@ public class MainManagement {
      * This Method will close the Database-connection and shut down the program.
      */
     public static void close() {
-        DBConncetion.connect();
-        AllContainer.instance().save();
-        PointCounter.instance().savePoints();
-        DBConncetion.closeConnection();
+        try {
+            DBConncetion.connect();
+            AllContainer.instance().save();
+            PointCounter.instance().savePoints();
+            DBConncetion.closeConnection();
+        } catch (Exception e) {
+            int i = JOptionPane.showOptionDialog(null,e.getMessage(),"Fehler",JOptionPane.OK_CANCEL_OPTION,JOptionPane.ERROR_MESSAGE,null,null,null);
+            System.exit(1);
+        }
         System.exit(0);
     }
 

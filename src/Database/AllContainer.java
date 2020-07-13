@@ -30,7 +30,7 @@ public class AllContainer implements QuestionContainer {
     /**
      * loads the questions into the Container and sorts them
      */
-    public void load() {
+    public void load() throws LoadSaveException {
         dataManagement.load(instance());
         sort();
     }
@@ -38,7 +38,7 @@ public class AllContainer implements QuestionContainer {
     /**
      * saves the Questions into the database
      */
-    public void save() {dataManagement.save(instance());}
+    public void save() throws LoadSaveException {dataManagement.save(instance());}
 
     /**
      * adds an new Question to the Container

@@ -38,7 +38,7 @@ public class DetailDialog extends AbstractDialog {
 						model.updateElement(q);
 						setButton("Bearbeiten");
 						enableAll(false);
-					} catch (IllegalArgumentException ee) {
+					} catch (Exception ee) {
 						JOptionPane.showMessageDialog(owner1, "Fehler: " + ee.getMessage());
 					}
 				}

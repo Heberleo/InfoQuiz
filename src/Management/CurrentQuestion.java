@@ -17,8 +17,9 @@ public class CurrentQuestion {
      * @param q may be null
      */
     public void setQuestion(Question q) {
-        if (q.equals(this.q)) propertyChangeSupport.firePropertyChange("question", null, q);
-        propertyChangeSupport.firePropertyChange("question", this.q, q);
+        if(q == null) propertyChangeSupport.firePropertyChange("question",null,null);
+        else if (q.equals(this.q)) propertyChangeSupport.firePropertyChange("question", null, q);
+        else propertyChangeSupport.firePropertyChange("question", this.q, q);
         this.q = q;
     }
 

@@ -2,6 +2,7 @@ package EingabeTool;
 
 import Database.AllContainer;
 import Database.DataManagement;
+import Database.LoadSaveException;
 import Database.QuestionImport;
 import Management.PointCounter;
 import Management.Question;
@@ -27,7 +28,7 @@ public class QuestionListModel extends DefaultListModel<Question>{
 	 * Sends the edited question to the database to be saved.
 	 * @param q the question that should be saved.
 	 */
-	public void updateElement(Question q) {
+	public void updateElement(Question q) throws LoadSaveException {
 		// Update in der Datenbank
 		dataManagement.edit(q);
 		fireContentsChanged(this, q.getId(), q.getId());
@@ -37,7 +38,7 @@ public class QuestionListModel extends DefaultListModel<Question>{
 	 * Adds a new question to the model and saves ist automatically in the database.
 	 * @param q new question
 	 */
-	public void newElement(Question q) {
+	public void newElement(Question q) throws LoadSaveException {
 		addElement(q);
 		AllContainer.instance().linkQuestion(q);
 		dataManagement.add(q);
@@ -65,7 +66,11 @@ public class QuestionListModel extends DefaultListModel<Question>{
 	public Question remove(int index) {
 		Question q = (Question) super.getElementAt(index);
 		AllContainer.instance().unlinkQuestion(q);
-		dataManagement.delete(q);
+		try {
+			dataManagement.delete(q);
+		} catch (LoadSaveException e) {
+			e.printStackTrace();
+		}
 		super.remove(index);
 		super.fireIntervalRemoved(this, index, index);
 		return q;
@@ -74,7 +79,7 @@ public class QuestionListModel extends DefaultListModel<Question>{
 	/**
 	 * Initializes the QuestionListModel. Imports all questions from the database.
 	 */
-	public void init() {
+	public void init() throws LoadSaveException {
 		// Datenbank connect
 		AllContainer.instance().load();
 
@@ -88,7 +93,7 @@ public class QuestionListModel extends DefaultListModel<Question>{
 	 * Iterates over all Question and sets the stats to 0, 0 and the marked-status to false. Automatically saves changes
 	 * to the database.
 	 */
-	public void resetStats() {
+	public void resetStats() throws LoadSaveException {
 		for (Question q : AllContainer.instance().getList()) {
 			q.setStats(new Stats(0,0));
 			q.setMarked(false);
@@ -99,7 +104,7 @@ public class QuestionListModel extends DefaultListModel<Question>{
 	/**
 	 * Sets the score to 0 and saves it.
 	 */
-	public void resetScore() {
+	public void resetScore() throws LoadSaveException {
 		PointCounter.instance().load();
 		PointCounter.instance().setPoints(0);
 		PointCounter.instance().savePoints();
