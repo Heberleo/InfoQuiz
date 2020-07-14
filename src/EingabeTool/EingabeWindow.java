@@ -107,7 +107,7 @@ public class EingabeWindow extends JFrame {
 			try {
 				model.resetStats();
 			} catch (LoadSaveException loadSaveException) {
-				loadSaveException.printStackTrace();
+				JOptionPane.showMessageDialog(null,loadSaveException.getMessage(),"Fehler",JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		resetMenu.add(resetStats);
@@ -121,7 +121,7 @@ public class EingabeWindow extends JFrame {
 			try {
 				model.resetScore();
 			} catch (LoadSaveException loadSaveException) {
-				loadSaveException.printStackTrace();
+				JOptionPane.showMessageDialog(null,loadSaveException.getMessage(),"Fehler",JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		resetMenu.add(resetScore);

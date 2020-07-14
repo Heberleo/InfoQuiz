@@ -39,7 +39,7 @@ public class DetailDialog extends AbstractDialog {
 						setButton("Bearbeiten");
 						enableAll(false);
 					} catch (Exception ee) {
-						JOptionPane.showMessageDialog(owner1, "Fehler: " + ee.getMessage());
+						JOptionPane.showMessageDialog(null,ee.getMessage(),"Fehler",JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}

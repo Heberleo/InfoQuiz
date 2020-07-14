@@ -32,7 +32,7 @@ public class MainManagement {
             PointCounter.instance().load();
             DBConncetion.closeConnection();
         } catch (Exception e) {
-            int i = JOptionPane.showOptionDialog(null,e.getMessage(),"Fehler",JOptionPane.OK_CANCEL_OPTION,JOptionPane.ERROR_MESSAGE,null,null,null);
+            JOptionPane.showMessageDialog(null,e.getMessage(),"Fehler",JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
         // set the QuestionList to start with
@@ -49,7 +49,7 @@ public class MainManagement {
             PointCounter.instance().savePoints();
             DBConncetion.closeConnection();
         } catch (Exception e) {
-            int i = JOptionPane.showOptionDialog(null,e.getMessage(),"Fehler",JOptionPane.OK_CANCEL_OPTION,JOptionPane.ERROR_MESSAGE,null,null,null);
+            JOptionPane.showMessageDialog(null,e.getMessage(),"Fehler",JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
         System.exit(0);

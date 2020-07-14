@@ -32,7 +32,7 @@ public class AddDialog extends AbstractDialog {
 						model.newElement(q);
 						dispose();
 					} catch (Exception ee) {
-						JOptionPane.showMessageDialog(owner1, "Fehler: " + ee.getMessage());
+						JOptionPane.showMessageDialog(null,ee.getMessage(),"Fehler",JOptionPane.ERROR_MESSAGE);
 					}
 			}
 		});
